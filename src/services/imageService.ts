@@ -22,7 +22,6 @@ export const addImage = async (imgBuffer: Buffer, filename: string) => {
     // Create and save the new image document
     const newImage = new Image({
         url: `http://localhost:5000/uploads/${filename}`,
-        tags,
         metadata: { key: filename },
     });
     const image = await newImage.save();
