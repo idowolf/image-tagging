@@ -49,12 +49,11 @@ const addToFaiss = async (embedding: number[], imageId: string) => {
     index.write('index.faiss');
 };
 
-export const findImagesWithTags = async (tags: string[]) => {
+export const findImagesWithTags = async (tags: string[], page: number, resultsPerPage: number) => {
     // Generate embeddings for the provided tags
     const embeddings = await Promise.all(tags.map(tag => generateEmbedding(tag)));
     
-    let index: IndexFlatL2;
-
+    let index: faiss.IndexFlatL2;
     if (fs.existsSync('index.faiss')) {
         index = faiss.IndexFlatL2.read('index.faiss');
     } else {
@@ -63,27 +62,24 @@ export const findImagesWithTags = async (tags: string[]) => {
 
     // Flatten the embeddings array for search
     const flattenedEmbeddings = embeddings.flat();
-    const faissResults = index.search(flattenedEmbeddings, Math.min(index.ntotal(), 10));
-    
-    const relevantTags = await FaissIndex.find({ faissIndex: { $in: faissResults.labels } }).populate('imageId');
+
+    // Calculate the offset for pagination
+    const offset = (page - 1) * resultsPerPage;
+    const searchResultsCount = Math.min(index.ntotal(), offset + resultsPerPage);
+    // Perform the search with pagination
+    const faissResults = index.search(flattenedEmbeddings, searchResultsCount);
+
+    // Extract the relevant results for the current page
+    const paginatedLabels = faissResults.labels.slice(offset, offset + resultsPerPage);
+
+    // Retrieve the relevant tags from the database
+    const relevantTags = await FaissIndex.find({ faissIndex: { $in: paginatedLabels } }).populate('imageId');
 
     // Extract image IDs from the relevant tags
     const imageIds = relevantTags.map(tag => tag.imageId);
 
     // Retrieve the images from MongoDB
     const images = await Image.find({ _id: { $in: imageIds } }).select('url');
+
     return images;
-};
-
-export const findSimilarImages = async (features: number[]) => {
-    let index: IndexFlatL2;
-
-    if (fs.existsSync('index.faiss')) {
-        index = faiss.IndexFlatL2.read('index.faiss');
-    } else {
-        index = new faiss.IndexFlatL2(384);
-    }
-
-    const faissResults = index.search(features, Math.min(index.ntotal(), 10));
-    return await FaissIndex.find({ faissIndex: { $in: faissResults.labels } }).populate('imageId');
 };
