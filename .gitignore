@@ -9,7 +9,7 @@ yarn-error.log*
 package-lock.json
 yarn.lock
 index.faiss
-
+output.txt
 # TypeScript
 *.tsbuildinfo
 *.tscache
