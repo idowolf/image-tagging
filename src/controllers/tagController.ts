@@ -1,15 +1,6 @@
 import { Request, Response } from 'express';
-import { getTopTags, upsertTags } from '../services/tagService';
+import { getTopTags } from '../services/tagService';
 import { generateTagsFromText } from '../utils/textTagConverter';
-
-export const getTopTagsHandler = async (req: Request, res: Response) => {
-    try {
-        const tags = await getTopTags(1000);
-        res.status(200).send(tags);
-    } catch (error: any) {
-        res.status(500).send({ error: error.message });
-    }
-};
 
 export const convertTextToTags = async (req: Request, res: Response) => {
     try {
@@ -18,7 +9,7 @@ export const convertTextToTags = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'Text is required' });
         }
 
-        const tags = await generateTagsFromText(text);
+        const tags = await generateTagsFromText(text,  (await getTopTags(1000)).map((tag) => tag.name));
         res.json({ tags });
     } catch (error: any) {
         console.error('Error converting text to tags:', error);
