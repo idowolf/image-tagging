@@ -8,7 +8,7 @@ import numpy as np
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
 def fetch_top_tags():
-    response = requests.get('http://localhost:5000/top-tags')
+    response = requests.get('http://localhost:5000/api/tags/top-tags')
     if response.status_code == 200:
         return [tag['name'] for tag in response.json()]
     else:
