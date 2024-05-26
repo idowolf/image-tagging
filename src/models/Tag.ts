@@ -4,13 +4,15 @@ interface ITag extends Document {
   name: string;
   createdAt: Date;
   updatedAt: Date;
-  usageCount: number; // To keep track of tag popularity
+  usageCount: number;
+  embedding?: number[];
 }
 
 const tagSchema = new Schema<ITag>(
   {
     name: { type: String, required: true, unique: true, lowercase: true, index: true },
-    usageCount: { type: Number, default: 0 } // New field for tag popularity
+    usageCount: { type: Number, default: 0 },
+    embedding: { type: [Number], default: null },
   },
   { timestamps: true }
 );

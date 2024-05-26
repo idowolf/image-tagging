@@ -8,7 +8,4 @@ const diskStorage = multer.diskStorage({
         cb(null, Date.now() + '-' + file.originalname);
     }
 });
-export const uploadDisk = multer({ storage: diskStorage });
-
-const memoryStorage = multer.memoryStorage();
-export const uploadMemory = multer({ storage: memoryStorage });
+export const upload = multer({ storage: diskStorage });
