@@ -11,7 +11,6 @@ export const generateEmbedding = async (tag: string): Promise<number[]> => {
 
     // If not, generate a new embedding
     const response = await axios.post('http://localhost:5001/embed', { text: tag });
-    console.log(`Generated embedding for tag ${tag} ${response.data.embedding}`);
     const embedding = response.data.embedding;
 
     // Store the new embedding in the tag document

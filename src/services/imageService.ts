@@ -35,7 +35,6 @@ export const addImage = async (imgBuffer: Buffer, filename: string) => {
 
 const addToFaiss = async (embedding: number[], imageId: string) => {
     const dimension = embedding.length;
-    console.log('Dimension:', dimension);
     let index: IndexFlatL2;
 
     if (fs.existsSync('index.faiss')) {
