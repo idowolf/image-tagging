@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Tag from '../models/Tag';
 
 export const generateTagsFromText = async (text: string, topTags: string[]): Promise<string[]> => {
     try {
@@ -13,3 +14,13 @@ export const generateTagsFromText = async (text: string, topTags: string[]): Pro
         throw error;
     }
 };
+
+export const autocomplete = async (query: string): Promise<string[]> => {
+    try {
+        const tags = await Tag.find({ name: { $regex: new RegExp(`^${query}`, 'i') } }).limit(10);
+        return tags.map(tag => tag.name);
+    } catch (error) {
+        console.error('Error autocompleting tags:', error);
+        throw error;
+    }
+}
