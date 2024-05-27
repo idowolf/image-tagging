@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Mongoose model for storing image data.
+ */
+
 import { Schema, model, Document } from 'mongoose';
 
 interface IImage extends Document {

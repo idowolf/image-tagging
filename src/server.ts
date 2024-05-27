@@ -1,3 +1,7 @@
+/**
+ * @fileoverview The main entry point of the server application.
+ */
+
 import app, { SESSION_SECRET } from './config/appConfig';
 import connectToDatabase from './config/dbConfig';
 import imageRoutes from './routes/imageRoutes';

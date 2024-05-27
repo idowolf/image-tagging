@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Configures the Express application, including middleware and environment variables.
+ */
+
 import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';

@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Mongoose model for storing tag data.
+ */
+
 import { Schema, model, Document } from 'mongoose';
 
 interface ITag extends Document {

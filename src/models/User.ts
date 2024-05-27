@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Mongoose model for storing user data.
+ */
+
 import { Schema, model, Document } from 'mongoose';
 
 interface IUser extends Document {

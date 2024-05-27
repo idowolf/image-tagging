@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Mongoose model for storing FAISS index entries.
+ */
+
 import { Schema, model, Document } from 'mongoose';
 
 interface IFaissIndex extends Document {

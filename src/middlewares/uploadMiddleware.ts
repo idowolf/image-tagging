@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Middleware for handling file uploads using Multer.
+ */
+
 import multer from 'multer';
 
 const diskStorage = multer.diskStorage({

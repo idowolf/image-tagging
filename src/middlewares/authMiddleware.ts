@@ -1,8 +1,18 @@
+/**
+ * @fileoverview Middleware for handling user authentication via JWT.
+ */
+
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { JWT_SECRET } from '../config/appConfig';
 import User from '../models/User'; // Ensure you have a User model defined
 
+/**
+ * Middleware function to authenticate a user via JWT.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next middleware function.
+ */
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
 

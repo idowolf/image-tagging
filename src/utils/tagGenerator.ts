@@ -1,5 +1,14 @@
+/**
+ * @fileoverview Utility functions for generating tags from images.
+ */
+
 import axios from 'axios';
 
+/**
+ * Generates tags for an image.
+ * @param {string} imageBase64 - The base64-encoded image.
+ * @returns {Promise<string[]>} The generated tags.
+ */
 const generateTags = async (imageBase64: string): Promise<string[]> => {
     try {
         const response = await axios.post('http://localhost:11434/api/generate', {

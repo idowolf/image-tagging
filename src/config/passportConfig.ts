@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Configures the Passport strategy for Google OAuth authentication.
+ */
+
 import { Strategy as GoogleStrategy, Profile, VerifyCallback } from 'passport-google-oauth20';
 import passport from 'passport';
 import User from '../models/User';
