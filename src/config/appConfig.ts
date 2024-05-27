@@ -18,5 +18,7 @@ if (!fs.existsSync('uploads')) {
 dotenv.config();
 export const JWT_SECRET = process.env.JWT_SECRET as string;
 export const SESSION_SECRET = process.env.SESSION_SECRET as string;
+export const LLM_SERVER_URL = process.env.LLM_SERVER_URL as string;
+export const NLP_SERVER_URL = process.env.NLP_SERVER_URL as string;
 
 export default app;

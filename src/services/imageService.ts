@@ -2,12 +2,10 @@
  * @fileoverview Contains services for handling image-related operations.
  */
 
-import fs from 'fs';
-import faiss, { IndexFlatL2 } from 'faiss-node';
 import Image from '../models/Image';
-import FaissIndex from '../models/FaissIndex';
-import generateTags from '../utils/tagGenerator';
+import { generateTags } from './llmService';
 import { generateEmbedding, upsertTags } from './tagService';
+import { addToFaiss, searchFaissIndex } from './vectorService';
 
 /**
  * Adds an image to the database and FAISS index.
@@ -27,32 +25,12 @@ export const addImage = async (imgBuffer: Buffer, filename: string) => {
         return acc;
     }, new Array(tagEmbeddings[0].length).fill(0)).map(x => x / tags.length);
     const newImage = new Image({
-        url: `http://localhost:5000/uploads/${filename}`,
+        key: `uploads/${filename}`,
         metadata: { key: filename },
     });
     const image = await newImage.save();
     await addToFaiss(combinedEmbedding, image._id.toString());
     return image;
-};
-
-/**
- * Adds an embedding to the FAISS index.
- * @param {number[]} embedding - The embedding vector.
- * @param {string} imageId - The ID of the image.
- */
-const addToFaiss = async (embedding: number[], imageId: string) => {
-    const dimension = embedding.length;
-    let index: IndexFlatL2;
-
-    if (fs.existsSync('index.faiss')) {
-        index = faiss.IndexFlatL2.read('index.faiss');
-    } else {
-        index = new faiss.IndexFlatL2(dimension);
-    }
-
-    index.add(embedding);
-    await FaissIndex.create({ faissIndex: index.ntotal() - 1, imageId });
-    index.write('index.faiss');
 };
 
 /**
@@ -64,24 +42,10 @@ const addToFaiss = async (embedding: number[], imageId: string) => {
  */
 export const findImagesWithTags = async (tags: string[], page: number, resultsPerPage: number) => {
     const embeddings = await Promise.all(tags.map(tag => generateEmbedding(tag)));
-    
-    let index: faiss.IndexFlatL2;
-    if (fs.existsSync('index.faiss')) {
-        index = faiss.IndexFlatL2.read('index.faiss');
-    } else {
-        throw new Error('FAISS index for images not found.');
-    }
 
-    const flattenedEmbeddings = embeddings.flat();
-    const offset = (page - 1) * resultsPerPage;
-    const searchResultsCount = Math.min(index.ntotal(), offset + resultsPerPage);
-    const faissResults = index.search(flattenedEmbeddings, searchResultsCount);
+    const imageIds = await searchFaissIndex(embeddings, page, resultsPerPage);
 
-    const paginatedLabels = faissResults.labels.slice(offset, offset + resultsPerPage);
-    const relevantTags = await FaissIndex.find({ faissIndex: { $in: paginatedLabels } }).populate('imageId');
-    const imageIds = relevantTags.map(tag => tag.imageId);
-
-    const images = await Image.find({ _id: { $in: imageIds } }).select('url');
+    const images = await Image.find({ _id: { $in: imageIds } }).select('key');
 
     return images;
 };

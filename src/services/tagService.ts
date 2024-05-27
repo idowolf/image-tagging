@@ -2,8 +2,8 @@
  * @fileoverview Contains services for handling tag-related operations.
  */
 
-import axios from 'axios';
 import Tag from '../models/Tag';
+import { embedText, getRelevantTags } from './nlpService';
 
 /**
  * Generates or retrieves an embedding for a tag.
@@ -16,8 +16,7 @@ export const generateEmbedding = async (tag: string): Promise<number[]> => {
         return existingTag.embedding;
     }
 
-    const response = await axios.post('http://localhost:5001/embed', { text: tag });
-    const embedding = response.data.embedding;
+    const embedding = await embedText(tag);
 
     if (existingTag) {
         existingTag.embedding = embedding;
@@ -34,13 +33,44 @@ export const generateEmbedding = async (tag: string): Promise<number[]> => {
 export const upsertTags = async (tags: string[]) => {
     for (const tag of tags) {
         const now = new Date();
-        const tagDoc = await Tag.findOneAndUpdate(
+        await Tag.findOneAndUpdate(
             { name: tag },
             { $setOnInsert: { createdAt: now }, $set: { updatedAt: now }, $inc: { usageCount: 1 } },
             { upsert: true, new: true }
         );
 
-        const embedding = await generateEmbedding(tag);
+        await generateEmbedding(tag);
+    }
+};
+
+/**
+ * Generates tags from text.
+ * @param {string} text - The text to convert to tags.
+ * @param {string[]} topTags - The top tags to consider.
+ * @returns {Promise<string[]>} The generated tags.
+ */
+export const generateTagsFromText = async (text: string): Promise<string[]> => {
+    try {
+        const response = await getRelevantTags(text, await getTopTags(1000));
+        return response;
+    } catch (error) {
+        console.error('Error generating tags:', error);
+        throw error;
+    }
+};
+
+/**
+ * Provides autocomplete suggestions for tags.
+ * @param {string} query - The query string to autocomplete.
+ * @returns {Promise<string[]>} The autocomplete suggestions.
+ */
+export const autocomplete = async (query: string): Promise<string[]> => {
+    try {
+        const tags = await Tag.find({ name: { $regex: new RegExp(`^${query}`, 'i') } }).limit(10);
+        return tags.map(tag => tag.name);
+    } catch (error) {
+        console.error('Error autocompleting tags:', error);
+        throw error;
     }
 };
 
@@ -49,6 +79,6 @@ export const upsertTags = async (tags: string[]) => {
  * @param {number} limit - The maximum number of tags to retrieve.
  * @returns {Promise<string[]>} The top tags.
  */
-export const getTopTags = async (limit: number) => {
-    return await Tag.find({}, 'name -_id').sort({ usageCount: -1 }).limit(limit);
+export const getTopTags = async (limit: number): Promise<string[]> => {
+    return await (await Tag.find({}, 'name -_id').sort({ usageCount: -1 }).limit(limit)).map(tag => tag.name);
 };
