@@ -62,7 +62,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
   try {
     const user = await User.findOne({ email });
-    if (!user) {
+    if (!user || !user.password) {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
@@ -78,3 +78,15 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const redirectGoogleSignIn = async (req: Request, res: Response) => {
+  const user: any = req.user;
+  if (!user) {
+    return res.status(400).json({ error: 'User not found' });
+  }
+  if (!user.fullName || !user.team || !user.department || !user.role) {
+    res.redirect('/complete-profile');
+    return;
+  }
+  res.redirect('/home');
+}

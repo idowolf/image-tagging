@@ -17,7 +17,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
   if (!token) {
-    return res.status(401).json({ error: 'Access denied, no token provided' });
+    return res.redirect('/login');
   }
 
   try {
@@ -25,18 +25,18 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     const userId = decoded.userId;
 
     if (!userId) {
-      return res.status(401).json({ error: 'Invalid token, no userId found' });
+      return res.redirect('/login');
     }
 
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.redirect('/login');
     }
 
     (req as any).user = user;
     next();
   } catch (error: any) {
-    res.status(401).json({ error: 'Invalid token' });
+    res.redirect('/login');
   }
 };

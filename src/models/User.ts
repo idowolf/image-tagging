@@ -5,22 +5,24 @@
 import { Schema, model, Document } from 'mongoose';
 
 interface IUser extends Document {
-  fullName: string;
-  department: string;
-  team: string;
-  role: string;
+  fullName?: string;
+  department?: string;
+  team?: string;
+  role?: string;
   email: string;
-  password: string;
+  password?: string;
+  googleId?: string;
 }
 
 const userSchema = new Schema<IUser>(
   {
-    fullName: { type: String, required: true },
-    department: { type: String, required: true },
-    team: { type: String, required: true },
-    role: { type: String, required: true },
+    fullName: { type: String, default: null },
+    department: { type: String, default: null },
+    team: { type: String, default: null },
+    role: { type: String, default: null },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    googleId: { type: String, default: null },
+    password: { type: String, default: null },
   },
   { timestamps: true }
 );

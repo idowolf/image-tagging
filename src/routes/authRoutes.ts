@@ -4,7 +4,7 @@
 
 import { Router } from 'express';
 import passport from 'passport';
-import { loginUser, registerUser } from '../controllers/authController';
+import { loginUser, redirectGoogleSignIn, registerUser } from '../controllers/authController';
 import { completeProfile } from '../controllers/userController';
 
 const router = Router();
@@ -37,12 +37,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
  * @route GET /api/auth/google/callback
  * @description Handles the callback after Google OAuth authentication.
  */
-router.get('/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    res.redirect('/profile'); //TODO: Adjust the path as needed
-  }
-);
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), redirectGoogleSignIn);
 
 /**
  * @route POST /api/auth/complete-profile
