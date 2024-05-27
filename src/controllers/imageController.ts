@@ -39,7 +39,6 @@ export const searchImages = async (req: Request, res: Response) => {
     if (!tags) {
         return res.status(400).json({ error: 'Tags parameter is required' });
     }
-    // Try to parse the page number and page size, fallback to undefined if not a number
     const parsedPageSize = parseInt(pageSize as string) || 20;
     const parsedPageNumber = parseInt(pageNumber as string) || 1;
     try {

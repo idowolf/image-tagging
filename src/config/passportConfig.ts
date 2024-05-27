@@ -21,8 +21,7 @@ async (_accessToken: string, _refreshToken: string, profile: Profile, done: Veri
       user = new User({
         googleId: profile.id,
         fullName: profile.displayName,
-        email: profile.emails ? profile.emails[0].value : null, // Add null check for profile.emails
-        // Other fields can be left blank initially
+        email: profile.emails ? profile.emails[0].value : null,
       });
       await user.save();
     }

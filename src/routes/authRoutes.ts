@@ -40,8 +40,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
-    // Successful authentication, redirect home or to complete profile if needed.
-    res.redirect('/profile'); // Adjust the path as needed
+    res.redirect('/profile'); //TODO: Adjust the path as needed
   }
 );
 

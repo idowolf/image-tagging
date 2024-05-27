@@ -5,7 +5,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { JWT_SECRET } from '../config/appConfig';
-import User from '../models/User'; // Ensure you have a User model defined
+import User from '../models/User';
 
 /**
  * Middleware function to authenticate a user via JWT.
