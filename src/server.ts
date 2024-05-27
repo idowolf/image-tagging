@@ -2,7 +2,7 @@
  * @fileoverview The main entry point of the server application.
  */
 
-import app, { SESSION_SECRET } from './config/appConfig';
+import app, { MONGO_DB_URI, SERVER_PORT, SESSION_SECRET } from './config/appConfig';
 import connectToDatabase from './config/dbConfig';
 import imageRoutes from './routes/imageRoutes';
 import tagRoutes from './routes/tagRoutes';
@@ -11,9 +11,9 @@ import passport from './config/passportConfig';
 import session from 'express-session';
 
 
-const url = 'mongodb://localhost:27017/imageDB';
+const databaseUrl = `${MONGO_DB_URI}/imageDB`;
 
-connectToDatabase(url);
+connectToDatabase(databaseUrl);
 app.use(session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -22,6 +22,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/images', imageRoutes);
 app.use('/api/tags', tagRoutes);
 
-app.listen(5000, () => {
-  console.log('Server started on port 5000');
+app.listen(SERVER_PORT, () => {
+  console.log(`Server started on port ${SERVER_PORT}`);
 });

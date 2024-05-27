@@ -5,10 +5,11 @@
 import { Strategy as GoogleStrategy, Profile, VerifyCallback } from 'passport-google-oauth20';
 import passport from 'passport';
 import User from '../models/User';
+import { GOOGLE_OAUTH2_CLIENT_ID, GOOGLE_OAUTH2_CLIENT_SECRET } from './appConfig';
 
 passport.use(new GoogleStrategy({
-  clientID: 'YOUR_GOOGLE_CLIENT_ID',
-  clientSecret: 'YOUR_GOOGLE_CLIENT_SECRET',
+  clientID: GOOGLE_OAUTH2_CLIENT_ID,
+  clientSecret: GOOGLE_OAUTH2_CLIENT_SECRET,
   callbackURL: '/api/auth/google/callback'
 },
 async (_accessToken: string, _refreshToken: string, profile: Profile, done: VerifyCallback): Promise<void> => {
