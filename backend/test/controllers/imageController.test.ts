@@ -33,7 +33,7 @@ describe('Image Controller', () => {
   });
 
   describe('uploadImage', () => {
-    it('should return 201 and the saved image if the file is provided', async () => {
+    it('should return 200 and the saved image if the file is provided', async () => {
       const imgBuffer = Buffer.from('test image buffer');
       const image = { _id: '123', key: 'uploads/test.jpg' };
       (fs.promises.readFile as jest.Mock).mockResolvedValue(imgBuffer);
@@ -44,7 +44,7 @@ describe('Image Controller', () => {
       await uploadImage(req as Request, res as Response);
 
       expect(fs.promises.readFile).toHaveBeenCalledWith('test/path');
-      expect(statusMock).toHaveBeenCalledWith(201);
+      expect(statusMock).toHaveBeenCalledWith(200);
       expect(jsonMock).toHaveBeenCalledWith({ message: 'Image upload initiated' });
     });
 

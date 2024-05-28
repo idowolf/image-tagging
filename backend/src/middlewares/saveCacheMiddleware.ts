@@ -12,7 +12,7 @@ const saveCacheMiddleware = (cacheDuration: number) => {
 
         res.send = (body: any) => {
             const cacheKey = res.locals.cacheKey;
-            if (cacheKey) {
+            if (cacheKey && res.statusCode === 200) {
                 redis.set(cacheKey, body, 'EX', cacheDuration)
                     .then(() => {
                     })

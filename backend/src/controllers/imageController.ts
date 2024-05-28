@@ -18,7 +18,7 @@ export const uploadImage = async (req: Request, res: Response) => {
         if (req.file) {
             const imgBuffer = await fs.promises.readFile(req.file.path);
             await addImageToQueue(imgBuffer, req.file.path);
-            res.status(201).json({ message: 'Image upload initiated' });
+            res.status(200).json({ message: 'Image upload initiated' });
         } else {
             throw new Error('No file provided');
         }
