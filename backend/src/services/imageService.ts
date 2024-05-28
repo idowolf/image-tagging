@@ -2,6 +2,7 @@
  * @fileoverview Contains services for handling image-related operations.
  */
 
+import redis from '../config/redisConfig';
 import Image from '../models/Image';
 import { generateTags } from './llmService';
 import { generateEmbedding, upsertTags } from './tagService';
@@ -31,6 +32,13 @@ export const addImage = async (imgBuffer: Buffer, filename: string) => {
         });
         const image = await newImage.save();
         await addToFaiss(combinedEmbedding, image._id.toString());
+        // Invalidate search cache
+        await redis.keys('search:*').then(keys => {
+            if (keys.length) {
+                redis.del(keys);
+            }
+        });
+
         return image;
     } catch (error) {
         console.error('Error adding image:', error);

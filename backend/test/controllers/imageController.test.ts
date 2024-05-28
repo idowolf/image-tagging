@@ -2,8 +2,10 @@ import { Request, Response } from 'express';
 import { uploadImage, searchImages } from '../../src/controllers/imageController';
 import { addImage, findImagesWithTags } from '../../src/services/imageService';
 import fs from 'fs';
+import { addImageToQueue } from '../../src/services/queueService';
 
 jest.mock('../../src/services/imageService');
+jest.mock('../../src/services/queueService');
 jest.mock('fs', () => ({
   promises: {
     readFile: jest.fn(),
@@ -36,14 +38,14 @@ describe('Image Controller', () => {
       const image = { _id: '123', key: 'uploads/test.jpg' };
       (fs.promises.readFile as jest.Mock).mockResolvedValue(imgBuffer);
       (addImage as jest.Mock).mockResolvedValue(image);
+      (addImageToQueue as jest.Mock).mockResolvedValue(undefined);
       req.file = { path: 'test/path', originalname: 'test.jpg' } as Express.Multer.File;
 
       await uploadImage(req as Request, res as Response);
 
       expect(fs.promises.readFile).toHaveBeenCalledWith('test/path');
-      expect(addImage).toHaveBeenCalledWith(imgBuffer, 'test/path');
       expect(statusMock).toHaveBeenCalledWith(201);
-      expect(jsonMock).toHaveBeenCalledWith(image);
+      expect(jsonMock).toHaveBeenCalledWith({ message: 'Image upload initiated' });
     });
 
     it('should return 500 if no file is provided', async () => {

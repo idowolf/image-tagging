@@ -3,8 +3,9 @@
  */
 
 import { Request, Response } from 'express';
-import { addImage, findImagesWithTags } from '../services/imageService';
+import { findImagesWithTags } from '../services/imageService';
 import fs from 'fs';
+import { addImageToQueue } from '../services/queueService';
 
 /**
  * Uploads an image to the server.
@@ -16,8 +17,8 @@ export const uploadImage = async (req: Request, res: Response) => {
     try {
         if (req.file) {
             const imgBuffer = await fs.promises.readFile(req.file.path);
-            const image = await addImage(imgBuffer, req.file.path);
-            res.status(201).json(image);
+            await addImageToQueue(imgBuffer, req.file.path);
+            res.status(201).json({ message: 'Image upload initiated' });
         } else {
             throw new Error('No file provided');
         }

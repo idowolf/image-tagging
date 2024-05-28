@@ -5,6 +5,7 @@ const redis = new Redis({
     host: REDIS_HOST,
     port: REDIS_PORT,
     password: REDIS_PASSWORD,
+    maxRetriesPerRequest: null
 });
 
 export default redis;
