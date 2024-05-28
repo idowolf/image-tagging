@@ -1,0 +1,3 @@
+--require tsx/register
+--extension ts
+--recursive
