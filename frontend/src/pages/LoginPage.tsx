@@ -7,6 +7,7 @@ const LoginPage: React.FC = () => {
     <div>
       <Login />
       <GoogleAuthButton />
+      <p>Don't have an account? <a href="/register">Sign up</a></p>
     </div>
   );
 };

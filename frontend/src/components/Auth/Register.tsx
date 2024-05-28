@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Container, Typography } from '@mui/material';
 import { registerUser } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { isEmailValid, isPasswordValid } from '../../utils/dataValidation';
 
 const Register: React.FC = () => {
   const [fullName, setFullName] = useState('');
@@ -43,7 +44,14 @@ const Register: React.FC = () => {
         fullWidth
         margin="normal"
       />
-      <Button variant="contained" color="primary" onClick={handleRegister}>Register</Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleRegister}
+        disabled={!isEmailValid(email) || !isPasswordValid(password) || !fullName}
+      >
+        Register
+      </Button>
     </Container>
   );
 };
