@@ -112,7 +112,6 @@ export const findImagesWithTags = async (tags: string[], page: number, resultsPe
     const embeddings = await Promise.all(tags.map(tag => generateEmbedding(tag)));
 
     const imageIds = await searchFaissIndex(embeddings, page, resultsPerPage);
-    console.log('Image IDs:', imageIds);
     const images = await Image.find({ _id: { $in: imageIds } }).select('key');
 
     return images;
