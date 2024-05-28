@@ -125,7 +125,7 @@ This project is a comprehensive web application designed for managing and taggin
 
 ### Setting Up and Hosting MongoDB on Localhost
 
-    - Visit the MongoDB installation page [here](https://docs.mongodb.com/manual/installation/) and follow the instructions to install MongoDB and host it locally for your specific operating system. Adjust `MONGO_DB_URI` in the `.env` file if necessary.
+Visit the MongoDB installation page [here](https://docs.mongodb.com/manual/installation/) and follow the instructions to install MongoDB and host it locally for your specific operating system. Adjust `MONGO_DB_URI` in the `.env` file if necessary.
 
 ## Project Structure Details
 
