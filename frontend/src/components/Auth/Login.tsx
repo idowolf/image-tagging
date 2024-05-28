@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { TextField, Button, Container, Typography } from '@mui/material';
 import { loginUser } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
+  const { setToken } = useAuth();
+  
   const handleLogin = async () => {
     try {
       const response = await loginUser({ email, password });
-      localStorage.setItem('token', response.data.token);
+      setToken(response.data.token);
       navigate('/');
     } catch (error) {
       console.error('Login failed', error);

@@ -20,9 +20,14 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    localStorage.setItem('token', token);
     const fetchProfile = async () => {
       try {
         const response = await getProfile();
