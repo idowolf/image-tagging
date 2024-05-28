@@ -31,7 +31,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "npx tsx src/server.ts",
-    "test": "jest",
+    "test": "jest --watchAll --setupFiles dotenv/config",
     "collect-source": "npx tsx collectSource.ts"
   },
   "keywords": [],
