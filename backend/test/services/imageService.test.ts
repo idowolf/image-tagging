@@ -3,11 +3,30 @@ import Image from '../../src/models/Image';
 import { generateTags } from '../../src/services/llmService';
 import { generateEmbedding, upsertTags } from '../../src/services/tagService';
 import { addToFaiss, searchFaissIndex } from '../../src/services/vectorService';
+import faiss from 'faiss-node';
 
 jest.mock('../../src/models/Image');
 jest.mock('../../src/services/llmService');
 jest.mock('../../src/services/tagService');
 jest.mock('../../src/services/vectorService');
+jest.mock('faiss-node', () => ({
+    IndexFlatL2: {
+        read: jest.fn().mockReturnValue({
+            search: jest.fn().mockReturnValue({ labels: [1, 2, 3] }),
+            ntotal: 2,
+            add: jest.fn(),
+            write: jest.fn(),
+            mergeFrom: jest.fn()
+        }),
+        fromBuffer: jest.fn().mockReturnValue({
+            search: jest.fn().mockReturnValue({ labels: [1, 2, 3] }),
+            ntotal: 2,
+            add: jest.fn(),
+            write: jest.fn(),
+            mergeFrom: jest.fn()
+        })
+    }
+}));
 
 describe('imageService', () => {
     describe('addImage', () => {
@@ -53,7 +72,7 @@ describe('imageService', () => {
             const tagEmbeddings = [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]];
             const imageIds = ['imageId1', 'imageId2'];
             const images = [{ _id: 'imageId1', key: 'uploads/test1.jpg' }, { _id: 'imageId2', key: 'uploads/test2.jpg' }];
-            
+
             (generateEmbedding as jest.Mock).mockImplementation((tag) => {
                 if (tag === 'tag1') return Promise.resolve(tagEmbeddings[0]);
                 if (tag === 'tag2') return Promise.resolve(tagEmbeddings[1]);
