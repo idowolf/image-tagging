@@ -40,7 +40,7 @@ router.post('/google', loginWithGoogle);
  * @body {string} team - The team of the user.
  * @body {string} role - The role of the user.
  */
-router.post('/complete-profile', completeProfile);
+router.post('/complete-profile', authMiddleware, completeProfile);
 
 router.get('/profile', authMiddleware, (req, res) => { res.status(200).json(req.user); });
 

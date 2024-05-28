@@ -32,7 +32,7 @@ describe('AuthMiddleware', () => {
     (User.findById as jest.Mock).mockResolvedValue({ _id: 'userId' });
 
     await authMiddleware(mockRequest as Request, mockResponse as Response, mockNext);
-
+    
     expect(mockNext).toHaveBeenCalled();
   });
 

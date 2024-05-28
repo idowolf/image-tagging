@@ -14,23 +14,28 @@ import { addToFaiss, searchFaissIndex } from './vectorService';
  * @returns {Promise<IImage>} The saved image document.
  */
 export const addImage = async (imgBuffer: Buffer, filename: string) => {
-    const imageBase64 = Buffer.from(imgBuffer).toString('base64');
-    const tags = await generateTags(imageBase64);
-    await upsertTags(tags);
-    const tagEmbeddings = await Promise.all(tags.map(tag => generateEmbedding(tag)));
-    const combinedEmbedding = tagEmbeddings.reduce((acc, embedding) => {
-        for (let i = 0; i < embedding.length; i++) {
-            acc[i] = (acc[i] || 0) + embedding[i];
-        }
-        return acc;
-    }, new Array(tagEmbeddings[0].length).fill(0)).map(x => x / tags.length);
-    const newImage = new Image({
-        key: `uploads/${filename}`,
-        metadata: { key: filename },
-    });
-    const image = await newImage.save();
-    await addToFaiss(combinedEmbedding, image._id.toString());
-    return image;
+    try {
+        const imageBase64 = Buffer.from(imgBuffer).toString('base64');
+        const tags = await generateTags(imageBase64);
+        await upsertTags(tags);
+        const tagEmbeddings = await Promise.all(tags.map(tag => generateEmbedding(tag)));
+        const combinedEmbedding = tagEmbeddings.reduce((acc, embedding) => {
+            for (let i = 0; i < embedding.length; i++) {
+                acc[i] = (acc[i] || 0) + embedding[i];
+            }
+            return acc;
+        }, new Array(tagEmbeddings[0].length).fill(0)).map(x => x / tags.length);
+        const newImage = new Image({
+            key: `uploads/${filename}`,
+            metadata: { key: filename },
+        });
+        const image = await newImage.save();
+        await addToFaiss(combinedEmbedding, image._id.toString());
+        return image;
+    } catch (error) {
+        console.error('Error adding image:', error);
+        throw error;
+    }
 };
 
 /**

@@ -24,11 +24,10 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     if (!userId) {
       return res.status(401).json({ error: 'Invalid token' });
     }
-    const user = await User.findOne({ _id: userId });
+    const user = await User.findById(userId);
     if (!user) {
-      return res.status(401).json({ error: 'User not found' });
-    }
-
+      return res.status(404).json({ error: 'User not found' });
+    };
     (req as any).user = user;
     next();
   } catch (error: any) {

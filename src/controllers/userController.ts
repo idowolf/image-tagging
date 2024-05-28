@@ -14,12 +14,16 @@ import User from '../models/User';
  * @body {string} role - The role of the user.
  */
 export const completeProfile = async (req: Request, res: Response) => {
-  const { userId, department, team, role } = req.body;
-
-  try {
-    const user = await User.findByIdAndUpdate(userId, { department, team, role }, { new: true });
-    res.status(200).json(user);
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
+    const user = req.user as any;
+    if (!user) {
+        return res.status(500).json({ error: 'User not found' });
+    }
+    const userId = user._id;
+    const { department, team, role } = req.body;
+    try {
+        const user = await User.findByIdAndUpdate(userId, { department, team, role }, { new: true });
+        res.status(200).json(user);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
 };
