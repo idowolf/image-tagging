@@ -3,9 +3,9 @@
  */
 
 import { Router } from 'express';
-import passport from 'passport';
-import { loginUser, redirectGoogleSignIn, registerUser } from '../controllers/authController';
+import { loginUser, loginWithGoogle, registerUser } from '../controllers/authController';
 import { completeProfile } from '../controllers/userController';
+import { authMiddleware } from '../middlewares/authMiddleware';
 
 const router = Router();
 
@@ -31,13 +31,7 @@ router.post('/login', loginUser);
  * @route GET /api/auth/google
  * @description Initiates Google OAuth authentication.
  */
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-/**
- * @route GET /api/auth/google/callback
- * @description Handles the callback after Google OAuth authentication.
- */
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), redirectGoogleSignIn);
+router.post('/google', loginWithGoogle);
 
 /**
  * @route POST /api/auth/complete-profile
@@ -47,5 +41,7 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
  * @body {string} role - The role of the user.
  */
 router.post('/complete-profile', completeProfile);
+
+router.get('/profile', authMiddleware, (req, res) => { res.status(200).json(req.user); });
 
 export default router;

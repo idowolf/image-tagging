@@ -14,29 +14,24 @@ import User from '../models/User';
  * @param {NextFunction} next - The next middleware function.
  */
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-
+  let token = req.header('Authorization')?.replace('Bearer ', '');
   if (!token) {
-    return res.redirect('/login');
+    return res.status(401).json({ error: 'Access denied, no token provided' });
   }
-
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
     const userId = decoded.userId;
-
     if (!userId) {
-      return res.redirect('/login');
+      return res.status(401).json({ error: 'Invalid token' });
     }
-
-    const user = await User.findById(userId);
-
+    const user = await User.findOne({ _id: userId });
     if (!user) {
-      return res.redirect('/login');
+      return res.status(401).json({ error: 'User not found' });
     }
 
     (req as any).user = user;
     next();
   } catch (error: any) {
-    res.redirect('/login');
+    return res.status(401).json({ error: error.message });
   }
 };

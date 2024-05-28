@@ -21,7 +21,7 @@ const userSchema = new Schema<IUser>(
     team: { type: String, default: null },
     role: { type: String, default: null },
     email: { type: String, required: true, unique: true },
-    googleId: { type: String, default: null },
+    googleId: { type: String, default: null, index: true, sparse: true },
     password: { type: String, default: null },
   },
   { timestamps: true }

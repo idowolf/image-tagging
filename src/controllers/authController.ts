@@ -6,7 +6,10 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
-import { JWT_SECRET } from '../config/appConfig';
+import { GOOGLE_OAUTH2_CLIENT_ID, GOOGLE_OAUTH2_CLIENT_SECRET, JWT_SECRET } from '../config/appConfig';
+import { OAuth2Client } from 'google-auth-library';
+
+const client = new OAuth2Client(GOOGLE_OAUTH2_CLIENT_ID, GOOGLE_OAUTH2_CLIENT_SECRET);
 
 /**
  * Registers a new user.
@@ -79,14 +82,37 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-export const redirectGoogleSignIn = async (req: Request, res: Response) => {
-  const user: any = req.user;
-  if (!user) {
-    return res.status(400).json({ error: 'User not found' });
+/**
+ * Authenticates a user using Google login.
+ * 
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns A JSON response containing a token if the authentication is successful, or an error message if it fails.
+ */
+export const loginWithGoogle = async (req: Request, res: Response) => {
+  const { credential, client_id } = req.body;
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: client_id,
+    });
+    const payload = ticket.getPayload();
+    if (!payload) {
+      return res.status(400).json({ error: 'Invalid Google token' });
+    }
+    const { email, sub, name } = payload;
+    let user = await User.findOne({ googleId: sub });
+    if (!user) {
+      user = await User.create({
+        googleId: sub,
+        email,
+        fullName: name,
+      });
+    }
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token });
+  } catch (error) {
+    console.error('Error verifying Google token:', error);
+    res.status(400).json({ error: 'Invalid Google token' });
   }
-  if (!user.fullName || !user.team || !user.department || !user.role) {
-    res.redirect('/complete-profile');
-    return;
-  }
-  res.redirect('/home');
 }

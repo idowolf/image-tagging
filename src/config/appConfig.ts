@@ -20,6 +20,7 @@ export const JWT_SECRET = process.env.JWT_SECRET as string;
 export const SESSION_SECRET = process.env.SESSION_SECRET as string;
 export const LLM_SERVER_URL = process.env.LLM_SERVER_URL as string;
 export const NLP_SERVER_URL = process.env.NLP_SERVER_URL as string;
+export const CLIENT_APP_URL = process.env.CLIENT_APP_URL as string;
 export const MONGO_DB_URI = process.env.MONGO_DB_URI as string;
 export const GOOGLE_OAUTH2_CLIENT_ID = process.env.GOOGLE_OAUTH2_CLIENT_ID as string;
 export const GOOGLE_OAUTH2_CLIENT_SECRET = process.env.GOOGLE_OAUTH2_CLIENT_SECRET as string;
