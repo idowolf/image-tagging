@@ -3,7 +3,7 @@
  */
 
 import faiss, { IndexFlatL2 } from 'faiss-node';
-import FaissIndex from '../models/FaissIndex';
+import Image from '../models/Image';
 import fs from 'fs';
 
 let index: IndexFlatL2;
@@ -16,13 +16,11 @@ if (fs.existsSync('index.faiss')) {
 /**
  * Adds an embedding to the FAISS index.
  * @param {number[]} embedding - The embedding vector.
- * @param {string} imageId - The ID of the image.
  */
-export const addToFaiss = async (embedding: number[], imageId: string) => {
-    const dimension = embedding.length;
+export const addToFaiss = async (embedding: number[]) => {
     index.add(embedding);
-    await FaissIndex.create({ faissIndex: index.ntotal() - 1, imageId });
     index.write('index.faiss');
+    return index.ntotal() - 1;
 };
 
 /**
@@ -42,11 +40,9 @@ export const searchFaissIndex = async (embeddings: number[][], page: number, res
         const offset = (page - 1) * resultsPerPage;
         const searchResultsCount = Math.min(index.ntotal(), offset + resultsPerPage);
         const faissResults = index.search(flattenedEmbeddings, searchResultsCount);
-
         const paginatedLabels = faissResults.labels.slice(offset, offset + resultsPerPage);
-        const relevantTags = await FaissIndex.find({ faissIndex: { $in: paginatedLabels } }).populate('imageId');
-        const imageIds = relevantTags.map(tag => tag.imageId);
-        return imageIds;
+        const results = await Image.find({ faissIndex: { $in: paginatedLabels } });
+        return results.map(result => result._id);
     } catch (error) {
         console.error('Error searching FAISS index:', error);
         throw error;

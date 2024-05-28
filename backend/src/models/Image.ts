@@ -11,6 +11,7 @@ interface IImage extends Document {
   metadata?: {
     [key: string]: any;
   };
+  faissIndex: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,6 +20,7 @@ const imageSchema = new Schema<IImage>(
   {
     key: { type: String, required: true, index: true },
     hash: { type: String, required: true, unique: true },
+    faissIndex: { type: Number, required: true, unique: true, index: true },
     metadata: { type: Map, of: Schema.Types.Mixed },
   },
   { timestamps: true }

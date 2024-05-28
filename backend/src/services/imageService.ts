@@ -53,10 +53,11 @@ const calculateCombinedEmbedding = async (tags: string[]): Promise<number[]> => 
  * @param imageHash - The hash of the image.
  * @returns The saved image.
  */
-const saveNewImage = async (filename: string, imageHash: string) => {
+const saveNewImage = async (filename: string, imageHash: string, faissIndex: number) => {
     const newImage = new Image({
         key: filename,
         hash: imageHash,
+        faissIndex,
         metadata: { key: filename },
     });
     return await newImage.save();
@@ -80,30 +81,19 @@ const invalidateSearchCache = async () => {
  */
 export const addImage = async (imgBuffer: Buffer, filename: string) => {
     try {
-        console.log("1")
         const imageBase64 = convertBufferToBase64(imgBuffer);
-        console.log("2")
         const imageHash = generateImageHash(imageBase64);
-        console.log("3")
         const existingImage = await findExistingImage(imageHash);
-        console.log("4")
         if (existingImage) {
             console.log('Duplicate image detected, skipping save.');
             return existingImage;
         }
-        console.log("5")
         const tags = await generateTags(imageBase64);
-        console.log("6")
         await upsertTags(tags);
-        console.log("7")
         const combinedEmbedding = await calculateCombinedEmbedding(tags);
-        console.log("8")
-        const image = await saveNewImage(filename, imageHash);
-        console.log("9")
-        await addToFaiss(combinedEmbedding, image._id.toString());
-        console.log("10")
+        const faissIndex = await addToFaiss(combinedEmbedding);
+        const image = await saveNewImage(filename, imageHash, faissIndex);
         await invalidateSearchCache();
-        console.log("11")
         return image;
     } catch (error) {
         console.error('Error adding image:', error);
@@ -122,7 +112,7 @@ export const findImagesWithTags = async (tags: string[], page: number, resultsPe
     const embeddings = await Promise.all(tags.map(tag => generateEmbedding(tag)));
 
     const imageIds = await searchFaissIndex(embeddings, page, resultsPerPage);
-
+    console.log('Image IDs:', imageIds);
     const images = await Image.find({ _id: { $in: imageIds } }).select('key');
 
     return images;

@@ -59,7 +59,7 @@ describe('imageService', () => {
             expect(upsertTags).toHaveBeenCalledWith(tags);
             expect(generateEmbedding).toHaveBeenCalledWith('tag1');
             expect(generateEmbedding).toHaveBeenCalledWith('tag2');
-            expect(addToFaiss).toHaveBeenCalledWith(combinedEmbedding, imageId);
+            expect(addToFaiss).toHaveBeenCalledWith(combinedEmbedding);
             expect(result).toEqual(savedImage);
         });
     });
