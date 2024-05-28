@@ -8,8 +8,7 @@ This project is a comprehensive web application designed for managing and taggin
 
 - Node.js
 - Python
-- Docker (optional, for containerized setup)
-- MongoDB (or any preferred NoSQL database)
+- MongoDB
 - Ollama with the LLava model
 
 ## Setup Instructions
@@ -19,8 +18,8 @@ This project is a comprehensive web application designed for managing and taggin
 1. **Clone the repository**
 
     ```bash
-    git clone https://github.com/your-repo/image-management-system.git
-    cd image-management-system/backend
+    git clone https://github.com/idowolf/image-tagging.git
+    cd image-tagging/backend
     ```
 
 2. **Install dependencies**
@@ -43,12 +42,12 @@ This project is a comprehensive web application designed for managing and taggin
         mongod --dbpath <path_to_your_db>
         ```
 
-    - Update the `MONGO_DB_URI` environment variable in the `.env` file with your MongoDB URI.
+    - Update the `MONGO_DB_URI` environment variable in the `backend/.env` file with your MongoDB URI. You may adjust other parameters as well if necessary.
 
 5. **Run the application**
 
     ```bash
-    npm start
+    npm run dev
     ```
 
 6. **Run tests**
@@ -108,11 +107,11 @@ This project is a comprehensive web application designed for managing and taggin
 
 1. **Install Ollama**
 
-    - Follow the instructions to install Ollama from [here](https://www.ollama.com/installation).
+    - Follow the instructions to install Ollama from [here](https://ollama.com/download).
 
 2. **Download and Set Up the LLava Model**
 
-    - Follow the instructions to download the LLava model from [here](https://github.com/your-repo/llava-model).
+    - Follow the instructions to download the LLava model from [here](https://ollama.com/library/llava).
 
 3. **Run the LLava Model Server**
 
@@ -123,6 +122,10 @@ This project is a comprehensive web application designed for managing and taggin
 4. **Configure the Backend to Use the LLava Model**
 
     - Update the `LLM_SERVER_URL` environment variable in the `.env` file with the URL of your LLava model server.
+
+### Setting Up and Hosting MongoDB on Localhost
+
+    - Visit the MongoDB installation page [here](https://docs.mongodb.com/manual/installation/) and follow the instructions to install MongoDB and host it locally for your specific operating system. Adjust `MONGO_DB_URI` in the `.env` file if necessary.
 
 ## Project Structure Details
 
@@ -191,9 +194,5 @@ This project is a comprehensive web application designed for managing and taggin
 - `api.ts`: API service for making HTTP requests to the backend.
 
 ## Additional Information
-
-- **Version Control**: The project uses Git for version control. Ensure you commit changes regularly and use meaningful commit messages.
-- **Code Quality**: The project follows best practices for code quality and consistency. Use linting tools and follow the style guide.
-- **Contribution Guidelines**: Contributions are welcome. Please follow the contribution guidelines and code of conduct.
 
 For more detailed information on each part of the application, refer to the respective directories and files in the project repository.
