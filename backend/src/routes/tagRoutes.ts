@@ -8,6 +8,7 @@ import { authMiddleware } from '../middlewares/authMiddleware';
 import cacheMiddleware from '../middlewares/cacheMiddleware';
 import createCacheKeyMiddleware from '../middlewares/createCacheKeyMiddleware';
 import saveCacheMiddleware from '../middlewares/saveCacheMiddleware';
+import { CACHE_TIMEOUT } from '../config/appConfig';
 
 const router = Router();
 
@@ -18,7 +19,7 @@ const router = Router();
  * @body {string} text - The text to convert to tags.
  * @body {number} topTags - The number of top tags to generate.
  */
-router.post('/convertTextToTags', authMiddleware, createCacheKeyMiddleware, cacheMiddleware, saveCacheMiddleware(3600), convertTextToTags);
+router.post('/convertTextToTags', authMiddleware, createCacheKeyMiddleware, cacheMiddleware, saveCacheMiddleware(CACHE_TIMEOUT), convertTextToTags);
 
 /**
  * @route GET /api/tags/autocomplete
@@ -26,6 +27,6 @@ router.post('/convertTextToTags', authMiddleware, createCacheKeyMiddleware, cach
  * @header {string} Authorization - Bearer token for authentication.
  * @query {string} query - The query string to autocomplete.
  */
-router.get('/autocomplete', authMiddleware, createCacheKeyMiddleware, cacheMiddleware, saveCacheMiddleware(3600), autocompleteTags);
+router.get('/autocomplete', authMiddleware, createCacheKeyMiddleware, cacheMiddleware, saveCacheMiddleware(CACHE_TIMEOUT), autocompleteTags);
 
 export default router;

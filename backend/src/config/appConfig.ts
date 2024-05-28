@@ -26,4 +26,6 @@ export const REDIS_HOST = process.env.REDIS_HOST as string;
 export const REDIS_PORT = parseInt(process.env.REDIS_PORT as string);
 export const REDIS_PASSWORD = process.env.REDIS_PASSWORD as string;
 
+export const CACHE_TIMEOUT = 60; // 60 second cache just for simulation purposes
+
 export default app;
