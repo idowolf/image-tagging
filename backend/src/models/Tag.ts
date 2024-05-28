@@ -14,8 +14,8 @@ interface ITag extends Document {
 
 const tagSchema = new Schema<ITag>(
   {
-    name: { type: String, required: true, unique: true, lowercase: true, index: true },
-    usageCount: { type: Number, default: 0 },
+    name: { type: String, required: true, unique: true, lowercase: true },
+    usageCount: { type: Number, default: 0, index: true },
     embedding: { type: [Number], default: null },
   },
   { timestamps: true }

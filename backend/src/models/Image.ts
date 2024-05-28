@@ -17,7 +17,7 @@ interface IImage extends Document {
 
 const imageSchema = new Schema<IImage>(
   {
-    key: { type: String, required: true },
+    key: { type: String, required: true, index: true },
     hash: { type: String, required: true, unique: true },
     metadata: { type: Map, of: Schema.Types.Mixed },
   },
