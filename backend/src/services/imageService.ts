@@ -2,11 +2,16 @@
  * @fileoverview Contains services for handling image-related operations.
  */
 
+import crypto from 'crypto';
 import redis from '../config/redisConfig';
 import Image from '../models/Image';
 import { generateTags } from './llmService';
 import { generateEmbedding, upsertTags } from './tagService';
 import { addToFaiss, searchFaissIndex } from './vectorService';
+
+const generateImageHash = (imageBase64: string): string => {
+    return crypto.createHash('sha256').update(imageBase64).digest('hex');
+};
 
 /**
  * Adds an image to the database and FAISS index.
@@ -17,6 +22,12 @@ import { addToFaiss, searchFaissIndex } from './vectorService';
 export const addImage = async (imgBuffer: Buffer, filename: string) => {
     try {
         const imageBase64 = Buffer.from(imgBuffer).toString('base64');
+        const imageHash = generateImageHash(imageBase64);
+        const existingImage = await Image.findOne({ hash: imageHash });
+        if (existingImage) {
+            console.log('Duplicate image detected, skipping save.');
+            return existingImage;
+        }
         const tags = await generateTags(imageBase64);
         await upsertTags(tags);
         const tagEmbeddings = await Promise.all(tags.map(tag => generateEmbedding(tag)));
@@ -28,6 +39,7 @@ export const addImage = async (imgBuffer: Buffer, filename: string) => {
         }, new Array(tagEmbeddings[0].length).fill(0)).map(x => x / tags.length);
         const newImage = new Image({
             key: filename,
+            hash: imageHash,
             metadata: { key: filename },
         });
         const image = await newImage.save();

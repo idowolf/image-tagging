@@ -7,6 +7,7 @@ import { Schema, model, Document } from 'mongoose';
 interface IImage extends Document {
   _id: Schema.Types.ObjectId;
   key: string;
+  hash: string;
   metadata?: {
     [key: string]: any;
   };
@@ -17,6 +18,7 @@ interface IImage extends Document {
 const imageSchema = new Schema<IImage>(
   {
     key: { type: String, required: true },
+    hash: { type: String, required: true, unique: true },
     metadata: { type: Map, of: Schema.Types.Mixed },
   },
   { timestamps: true }
