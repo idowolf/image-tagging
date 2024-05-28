@@ -16,7 +16,7 @@ export const uploadImage = async (req: Request, res: Response) => {
     try {
         if (req.file) {
             const imgBuffer = await fs.promises.readFile(req.file.path);
-            const image = await addImage(imgBuffer, req.file.originalname);
+            const image = await addImage(imgBuffer, req.file.path);
             res.status(201).json(image);
         } else {
             throw new Error('No file provided');

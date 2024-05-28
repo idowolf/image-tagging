@@ -26,7 +26,7 @@ export const addImage = async (imgBuffer: Buffer, filename: string) => {
             return acc;
         }, new Array(tagEmbeddings[0].length).fill(0)).map(x => x / tags.length);
         const newImage = new Image({
-            key: `uploads/${filename}`,
+            key: filename,
             metadata: { key: filename },
         });
         const image = await newImage.save();
