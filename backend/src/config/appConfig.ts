@@ -22,5 +22,8 @@ export const MONGO_DB_URI = process.env.MONGO_DB_URI as string;
 export const GOOGLE_OAUTH2_CLIENT_ID = process.env.GOOGLE_OAUTH2_CLIENT_ID as string;
 export const GOOGLE_OAUTH2_CLIENT_SECRET = process.env.GOOGLE_OAUTH2_CLIENT_SECRET as string;
 export const SERVER_PORT = parseInt(process.env.SERVER_PORT as string);
+export const REDIS_HOST = process.env.REDIS_HOST as string;
+export const REDIS_PORT = parseInt(process.env.REDIS_PORT as string);
+export const REDIS_PASSWORD = process.env.REDIS_PASSWORD as string;
 
 export default app;

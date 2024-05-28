@@ -26,6 +26,7 @@ describe('Image Controller', () => {
     res = {
       status: statusMock,
       json: jsonMock,
+      locals: {},
     };
   });
 
@@ -81,10 +82,9 @@ describe('Image Controller', () => {
       const tags = ['tag1', 'tag2'];
       const images = [{ _id: '1', key: 'uploads/test1.jpg' }, { _id: '2', key: 'uploads/test2.jpg' }];
       (findImagesWithTags as jest.Mock).mockResolvedValue(images);
-      req.body = { tags: 'tag1,tag2', pageNumber: '1', pageSize: '10' };
+      req.body = { tags: ['tag1','tag2'], pageNumber: '1', pageSize: '10' };
 
       await searchImages(req as Request, res as Response);
-
       expect(findImagesWithTags).toHaveBeenCalledWith(['tag1', 'tag2'], 1, 10);
       expect(statusMock).toHaveBeenCalledWith(200);
       expect(jsonMock).toHaveBeenCalledWith(images);
