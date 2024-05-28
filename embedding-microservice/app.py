@@ -9,7 +9,6 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 def embed_text():
     data = request.json
     text = data['text']
-    print("MYTAG", text)
     embedding = model.encode([text])[0].tolist()
     return jsonify({'embedding': embedding})
 
