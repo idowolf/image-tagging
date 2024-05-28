@@ -9,25 +9,26 @@ jest.mock('../../src/models/Image');
 jest.mock('../../src/services/llmService');
 jest.mock('../../src/services/tagService');
 jest.mock('../../src/services/vectorService');
-jest.mock('faiss-node', () => ({
-    IndexFlatL2: {
-        read: jest.fn().mockReturnValue({
-            search: jest.fn().mockReturnValue({ labels: [1, 2, 3] }),
-            ntotal: 2,
-            add: jest.fn(),
-            write: jest.fn(),
-            mergeFrom: jest.fn()
-        }),
-        fromBuffer: jest.fn().mockReturnValue({
-            search: jest.fn().mockReturnValue({ labels: [1, 2, 3] }),
-            ntotal: 2,
-            add: jest.fn(),
-            write: jest.fn(),
-            mergeFrom: jest.fn()
-        })
-    }
-}));
+jest.mock('faiss-node', () => {
+    const IndexFlatL2 = jest.fn().mockImplementation(() => ({
+        search: jest.fn().mockReturnValue({ labels: [1, 2, 3] }),
+        ntotal: 2,
+        add: jest.fn(),
+        write: jest.fn(),
+        mergeFrom: jest.fn()
+    }));
 
+    IndexFlatL2: jest.fn().mockImplementation(() => ({
+        add: jest.fn(),
+        search: jest.fn().mockReturnValue({ labels: [1, 2, 3] }),
+        write: jest.fn(),
+        read: jest.fn().mockReturnValue({ labels: [1, 2, 3] }),
+        ntotal: jest.fn().mockReturnValue(2)
+      }));
+
+    // Return the mock constructor
+    return { IndexFlatL2 };
+});
 describe('imageService', () => {
     describe('addImage', () => {
         it('should add an image to the database and FAISS index', async () => {
