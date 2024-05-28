@@ -11,9 +11,6 @@ const app = express();
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
-if (!fs.existsSync('uploads')) {
-    fs.mkdirSync('uploads');
-}
 
 dotenv.config();
 export const JWT_SECRET = process.env.JWT_SECRET as string;

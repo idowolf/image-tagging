@@ -3,10 +3,13 @@
  */
 
 import multer from 'multer';
+import fs from 'fs';
 
 const diskStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
+    destination: (_req, _file, cb) => {
+        const path = `./uploads/`
+        fs.mkdirSync(path, { recursive: true })
+        return cb(null, path)  
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname);
