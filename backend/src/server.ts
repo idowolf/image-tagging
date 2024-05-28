@@ -11,6 +11,7 @@ import passport from './config/passportConfig';
 import session from 'express-session';
 import cors from 'cors';
 import cookies from 'cookie-parser';
+import rateLimit from 'express-rate-limit';
 
 const databaseUrl = `${MONGO_DB_URI}/imageDB`;
 
@@ -19,12 +20,20 @@ app.use(session({ secret: SESSION_SECRET, resave: false, saveUninitialized: fals
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookies());
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
 
 app.use(cors({
   origin: CLIENT_APP_URL,
   credentials: true,
 }));
 
+app.use('/api', apiLimiter);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/images', imageRoutes);
