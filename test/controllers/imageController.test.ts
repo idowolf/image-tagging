@@ -40,7 +40,7 @@ describe('Image Controller', () => {
       await uploadImage(req as Request, res as Response);
 
       expect(fs.promises.readFile).toHaveBeenCalledWith('test/path');
-      expect(addImage).toHaveBeenCalledWith(imgBuffer, 'test.jpg');
+      expect(addImage).toHaveBeenCalledWith(imgBuffer, 'test/path');
       expect(statusMock).toHaveBeenCalledWith(201);
       expect(jsonMock).toHaveBeenCalledWith(image);
     });

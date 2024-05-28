@@ -10,7 +10,7 @@ describe('UploadMiddleware', () => {
     const cb = jest.fn();
 
     storage.getDestination(req, file, cb);
-    expect(cb).toHaveBeenCalledWith(null, 'uploads/');
+    expect(cb).toHaveBeenCalledWith(null, 'uploads');
 
     storage.getFilename(req, file, cb);
     expect(cb).toHaveBeenCalledWith(null, expect.stringMatching(/^\d+-testfile\.jpg$/));
