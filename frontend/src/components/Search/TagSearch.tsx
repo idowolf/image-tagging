@@ -1,5 +1,3 @@
-// src/components/TagSearch.tsx
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, TextField, Chip, Grid, IconButton, InputAdornment, List, ListItem, ListItemText, debounce } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -9,11 +7,12 @@ import { SearchContainer, AutocompletePaper, SearchResultsContainer, TagsContain
 import SearchResults from './SearchResults';
 
 const TagSearch: React.FC = () => {
-    const { searchResult, handleSearch, setPage, hasMore, selectedTags, setSelectedTags } = useImageSearch();
+    const { searchResult, handleSearch, setPage, hasMore } = useImageSearch();
     const [topTags, setTopTags] = useState<string[]>([]);
     const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
     const [open, setOpen] = useState<boolean>(false);
+    const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
 
     useEffect(() => {
         getTopTags().then(response => {
@@ -114,7 +113,7 @@ const TagSearch: React.FC = () => {
             </SearchContainer>
             <TagsContainer>
                 <Grid container spacing={1}>
-                    {[...selectedTags].map((tag, index) => (
+                    {Array.from(selectedTags).map((tag, index) => (
                         <Grid item key={index}>
                             <Chip label={tag} onDelete={() => handleTagDelete(tag)} />
                         </Grid>

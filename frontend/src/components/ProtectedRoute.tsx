@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
+import { CircularProgress } from '@mui/material';
 interface ProtectedRouteProps {
     strict?: boolean;
     element: React.ReactElement;
@@ -15,7 +15,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ strict = true, element 
     };
     
     if (loading) {
-        return <div>Loading...</div>;
+
+        if (loading) {
+            return (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <CircularProgress />
+                </div>
+            );
+        }
     }
 
     if (!user) {

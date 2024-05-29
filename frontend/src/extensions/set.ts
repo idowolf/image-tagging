@@ -1,13 +1,14 @@
 export function isSetsEqual<T>(first: Set<T>, second: Set<T>): boolean {
-  if (first.size !== second.size) {
+  if (!first && !second) {
+    return true;
+  }
+  if (!first || !second) {
     return false;
   }
 
-  for (const element of first) {
-    if (!second.has(element)) {
-      return false;
-    }
-  }
+  const firstSet = new Set(first);
+  const secondSet = new Set(second);
 
-  return true;
+  return firstSet.size === secondSet.size &&
+    Array.from(firstSet).every((x) => secondSet.has(x));
 };

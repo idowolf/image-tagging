@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { searchImages } from '../services/api';
 import { isSetsEqual } from '../extensions/set';
 
@@ -11,9 +11,9 @@ export const useImageSearch = (initialTags: Set<string> = new Set()) => {
   const handleSearch = (newTags: Set<string> | null = null) => {
     if (!newTags || newTags.size === 0) return;
     const newSearch = newTags && !isSetsEqual(newTags, selectedTags);
-
+    setSelectedTags(newTags);
     const data = {
-      tags: newTags,
+      tags: newTags,  
       pageNumber: newSearch ? 1 : page,
       pageSize: 10
     };
@@ -55,6 +55,5 @@ export const useImageSearch = (initialTags: Set<string> = new Set()) => {
     setPage,
     hasMore,
     selectedTags,
-    setSelectedTags,
   };
 };
