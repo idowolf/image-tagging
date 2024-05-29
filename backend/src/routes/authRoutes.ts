@@ -42,6 +42,11 @@ router.post('/google', loginWithGoogle);
  */
 router.post('/complete-profile', authMiddleware, completeProfile);
 
+/**
+ * Retrieves the user's profile.
+ * 
+ * @route GET /api/auth/profile
+ */
 router.get('/profile', authMiddleware, (req, res) => { res.status(200).json(req.user); });
 
 export default router;
