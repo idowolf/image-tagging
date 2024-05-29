@@ -1,4 +1,11 @@
 module.exports = {
+  extends: "./tsconfig.json",
+  compilerOptions: {
+    "types": ["@types/jest"]
+  },
+  moduleNameMapper: {
+    '^faiss-node$': 'test/__mocks__/faiss-node.js'
+  },
   preset: 'ts-jest',
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'tsx', 'js'],

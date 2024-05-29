@@ -10,6 +10,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node"
   },
+  "types": ["@types/jest", "@types/mocha"],
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

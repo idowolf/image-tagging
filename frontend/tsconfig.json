@@ -1,3 +1,4 @@
+
 {
   "compilerOptions": {
     "target": "es5",
@@ -20,6 +21,10 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "types": [
+    "mocha",
+    "jest"
+  ],
   "include": [
     "src"
   ]
