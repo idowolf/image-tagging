@@ -15,19 +15,27 @@ const TagSearch: React.FC = () => {
     const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
 
     useEffect(() => {
-        getTopTags().then(response => {
-            const tags = response.data;
-            setTopTags(tags);
-            setAutocompleteOptions(tags);
-        });
+        (async () => {
+            try {
+                const response = await getTopTags();
+                const tags = response.data;
+                setTopTags(tags);
+                setAutocompleteOptions(tags);
+            } catch (error) {
+                console.error('Failed to fetch top tags', error);
+            }
+        })();
     }, []);
 
     const fetchSuggestions = useCallback(
-        debounce((input: string) => {
-            autocompleteTags(input).then(response => {
+        debounce(async (input: string) => {
+            try {
+                const response = await autocompleteTags(input);
                 const options = response.data;
                 setAutocompleteOptions(options);
-            });
+            } catch (error) {
+                console.error('Autocomplete failed', error);
+            }
         }, 500),
         []
     );
@@ -83,7 +91,7 @@ const TagSearch: React.FC = () => {
                     placeholder="Type to find tags..."
                     fullWidth
                     value={searchInput}
-                    style={{ padding: '0'}}
+                    style={{ padding: '0' }}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                     onFocus={() => setOpen(true)}

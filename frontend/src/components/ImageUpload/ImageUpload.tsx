@@ -1,9 +1,30 @@
-import React, { useState } from 'react';
-import { Button, Container, Typography, Input } from '@mui/material';
+import React, { useState, useCallback } from 'react';
+import { Button, Container, Typography } from '@mui/material';
+import styled from 'styled-components';
 import { uploadImage } from '../../services/api';
+import UploadContainer from './UploadContainer';
+import FileInput from './FileInput';
+import Alerts from './Alerts';
+import { ImageUploadDiv } from './styles';
 
 const ImageUpload: React.FC = () => {
-  const [file, setFile] = useState<File | void>(undefined);
+  const [file, setFile] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    if (file.size > 10 * 1024 * 1024) {
+      setError('File size must be less than 10MB');
+      return;
+    }
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+      setError('Only jpg or png files are allowed');
+      return;
+    }
+    setFile(file);
+    setError(null);
+  }, []);
 
   const handleUpload = async () => {
     if (!file) return;
@@ -11,22 +32,25 @@ const ImageUpload: React.FC = () => {
     formData.append('file', file);
     try {
       await uploadImage(formData);
-      alert('Image uploaded successfully');
+      setSuccess('Image uploaded successfully. Your file is being processed and will appear in search results soon.');
+      setFile(null);
     } catch (error) {
       console.error('Upload failed', error);
+      setError('Upload failed. Please try again later.');
     }
   };
 
   return (
-    <Container>
+    <ImageUploadDiv>
       <Typography variant="h4" gutterBottom>Upload Image</Typography>
-      <Input
-        type="file"
-        onChange={(e) => setFile((e.target as HTMLInputElement)?.files?.[0])}
-        fullWidth
-      />
-      <Button variant="contained" color="primary" onClick={handleUpload}>Upload</Button>
-    </Container>
+      <UploadContainer onDrop={onDrop} />
+      <FileInput file={file} />
+      <Button variant="contained" onClick={handleUpload} style={{ width: 'fit-content' }}>
+        Upload
+      </Button>
+      <Alerts message={error} severity="error" onClose={() => setError(null)} />
+      <Alerts message={success} severity="success" onClose={() => setSuccess(null)} />
+    </ImageUploadDiv>
   );
 };
 

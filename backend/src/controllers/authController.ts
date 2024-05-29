@@ -10,7 +10,7 @@ import { GOOGLE_OAUTH2_CLIENT_ID, GOOGLE_OAUTH2_CLIENT_SECRET, JWT_SECRET } from
 import { OAuth2Client } from 'google-auth-library';
 
 const client = new OAuth2Client(GOOGLE_OAUTH2_CLIENT_ID, GOOGLE_OAUTH2_CLIENT_SECRET);
-
+const jwtExpiration = '1h';
 /**
  * Registers a new user.
  * @param {Request} req - The request object.
@@ -45,7 +45,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
     await user.save();
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: jwtExpiration });
 
     res.status(200).json({ token });
   } catch (error: any) {
@@ -74,7 +74,7 @@ export const loginUser = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: jwtExpiration });
 
     res.status(200).json({ token });
   } catch (error: any) {
@@ -109,7 +109,7 @@ export const loginWithGoogle = async (req: Request, res: Response) => {
         fullName: name,
       });
     }
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: jwtExpiration });
     res.json({ token });
   } catch (error) {
     console.error('Error verifying Google token:', error);

@@ -8,17 +8,18 @@ export const useImageSearch = (initialTags: Set<string> = new Set()) => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [selectedTags, setSelectedTags] = useState<Set<string>>(initialTags);
 
-  const handleSearch = (newTags: Set<string> | null = null) => {
+  const handleSearch = async (newTags: Set<string> | null = null) => {
     if (!newTags || newTags.size === 0) return;
     const newSearch = newTags && !isSetsEqual(newTags, selectedTags);
     setSelectedTags(newTags);
     const data = {
-      tags: newTags,  
+      tags: newTags,
       pageNumber: newSearch ? 1 : page,
       pageSize: 10
     };
 
-    searchImages(data).then(response => {
+    try {
+      const response = await searchImages(data);
       const updatedResults = response.data.map((item: { key: string }) => ({
         ...item,
         key: `http://localhost:5000/${item.key}`
@@ -32,7 +33,9 @@ export const useImageSearch = (initialTags: Set<string> = new Set()) => {
 
       setHasMore(response.data.length > 0);
       if (newSearch) setPage(2);
-    });
+    } catch (error) {
+      console.error('Search failed', error);
+    }
   };
 
   useEffect(() => {

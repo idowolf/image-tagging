@@ -23,9 +23,23 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response && error.response.status !== 200) {
+    if (error.response && error.response.status === 401) {
       localStorage.removeItem('token');
-      window.location.href = "/login";
+      alert('You are not authenticated. Please login to continue.');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 429) {
+      localStorage.removeItem('token');
+      alert('Too many requests. Please slow down!');
     }
     return Promise.reject(error);
   }

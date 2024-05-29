@@ -18,15 +18,18 @@ const FreeformSearch: React.FC = () => {
     }
   }, []);
 
-  const initiateSearch = (newSearch: boolean = true) => {
+  const initiateSearch = async (newSearch: boolean = true) => {
     if (!searchInput) return;
     const newHistory = [searchInput, ...searchHistory.filter(item => item !== searchInput)].slice(0, 5);
     setSearchHistory(newHistory);
     localStorage.setItem('searchHistory', JSON.stringify(newHistory));
-    convertTextToTags({ text: searchInput, topTagsCount: 1000 }).then(response => {
+    try {
+      const response = await convertTextToTags({ text: searchInput, topTagsCount: 1000 });
       const convertedTags = response.data;
       handleSearch(convertedTags);
-    });
+    } catch (error) {
+      console.error('Search failed', error);
+    }
   };
 
   return (
@@ -58,7 +61,7 @@ const TextSearchField: React.FC<TextSearchFieldProps> = ({ params, initiateSearc
     <TextField
       {...params}
       fullWidth
-      style={{ padding: '0', height: '46px'}}
+      style={{ padding: '0', height: '46px' }}
       variant="outlined"
       placeholder="Enter your search..."
       InputProps={{
