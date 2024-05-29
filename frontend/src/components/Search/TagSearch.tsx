@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, TextField, Chip, Grid, IconButton, InputAdornment, List, ListItem, ListItemText, debounce } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import { getTopTags, autocompleteTags } from '../../services/api';
+import { Chip, Grid, debounce } from '@mui/material';
+import { getTopTags, autocompleteTags } from '../../routes/tags';
 import { useImageSearch } from '../../hooks/useImageSearch';
-import { SearchContainer, AutocompletePaper, SearchResultsContainer, TagsContainer, SearchIconPadding } from './styles';
+import { SearchResultsContainer, TagsContainer } from './styles';
 import SearchResults from './SearchResults';
 import CustomAutocompleteField from './CustomAutocompleteField';
 
@@ -27,6 +26,12 @@ const TagSearch: React.FC = () => {
             }
         })();
     }, []);
+
+    useEffect(() => {
+        if (selectedTags.size > 0) {
+            handleSearch(selectedTags);
+        }
+    }, [selectedTags]);
 
     const fetchSuggestions = useCallback(
         debounce(async (input: string) => {
@@ -54,7 +59,6 @@ const TagSearch: React.FC = () => {
     };
 
     const handleTagSelect = (tag: string) => {
-        console.log(tag);
         if (!selectedTags.has(tag)) {
             const newSelectedTags = new Set(selectedTags);
             newSelectedTags.add(tag);
@@ -73,7 +77,7 @@ const TagSearch: React.FC = () => {
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && searchInput) {
-            if (!selectedTags.has(searchInput)) {
+            if (!selectedTags.has(searchInput) && autocompleteOptions.includes(searchInput)) {
                 const newSelectedTags = new Set(selectedTags);
                 newSelectedTags.add(searchInput);
                 setSelectedTags(newSelectedTags);
@@ -90,6 +94,7 @@ const TagSearch: React.FC = () => {
                 value={searchInput}
                 onChange={handleInputChange}
                 handleKeyDown={handleKeyDown}
+                showIcon={false}
                 placeholder={'Type to find tags...'}
                 open={open}
                 setOpen={setOpen}
@@ -97,7 +102,7 @@ const TagSearch: React.FC = () => {
                 autocompleteOptions={autocompleteOptions}
                 onOptionSelected={handleTagSelect}
             />
-            <TagsContainer>
+            {selectedTags.size > 0 && <TagsContainer>
                 <Grid container spacing={1}>
                     {Array.from(selectedTags).map((tag, index) => (
                         <Grid item key={index}>
@@ -105,7 +110,7 @@ const TagSearch: React.FC = () => {
                         </Grid>
                     ))}
                 </Grid>
-            </TagsContainer>
+            </TagsContainer>}
             <SearchResults searchResult={searchResult} handleSearch={handleSearch} setPage={setPage} hasMore={hasMore} />
         </SearchResultsContainer>
     );

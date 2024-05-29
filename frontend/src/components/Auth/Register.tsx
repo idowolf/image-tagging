@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TextField, Button, Container, Typography, Snackbar, Alert } from '@mui/material';
-import { registerUser } from '../../services/api';
+import { TextField, Button, Typography, Snackbar, Alert } from '@mui/material';
+import { registerUser } from '../../routes/user';
 import { useNavigate } from 'react-router-dom';
 import { isEmailValid, isPasswordValid } from '../../utils/dataValidation';
 import { FormContainer } from './styles';

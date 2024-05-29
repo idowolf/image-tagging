@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, IconButton, InputAdornment, Autocomplete } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import { convertTextToTags } from '../../services/api';
+import { convertTextToTags } from '../../routes/tags';
 import { useImageSearch } from '../../hooks/useImageSearch';
-import { SearchIconPadding, SearchResultsContainer } from './styles';
+import { SearchResultsContainer } from './styles';
 import SearchResults from './SearchResults';
 import CustomAutocompleteField from './CustomAutocompleteField';
 

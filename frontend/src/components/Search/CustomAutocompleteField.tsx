@@ -8,6 +8,7 @@ interface CustomAutocompleteFieldProps {
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
     placeholder: string;
+    showIcon?: boolean;
     open: boolean;
     setOpen: (open: boolean) => void;
     onSearchClick: () => void;
@@ -15,7 +16,7 @@ interface CustomAutocompleteFieldProps {
     onOptionSelected: (option: string) => void;
 }
 
-const CustomAutocompleteField: React.FC<CustomAutocompleteFieldProps> = ({ value, onChange, handleKeyDown, placeholder, setOpen, open, onSearchClick, autocompleteOptions, onOptionSelected }) => {
+const CustomAutocompleteField: React.FC<CustomAutocompleteFieldProps> = ({ value, onChange, handleKeyDown, showIcon = true, placeholder, setOpen, open, onSearchClick, autocompleteOptions, onOptionSelected }) => {
     return (
             <SearchContainer>
                 <TextField
@@ -32,9 +33,9 @@ const CustomAutocompleteField: React.FC<CustomAutocompleteFieldProps> = ({ value
                         style: SearchIconPadding,
                         endAdornment: (
                             <InputAdornment position="end">
-                                <IconButton onClick={onSearchClick}>
+                                {showIcon && <IconButton onClick={onSearchClick}>
                                     <SearchIcon color="primary" />
-                                </IconButton>
+                                </IconButton>}
                             </InputAdornment>
                         ),
                     }}

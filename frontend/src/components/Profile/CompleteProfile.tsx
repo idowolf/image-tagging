@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Button, Container, Typography } from '@mui/material';
-import { completeUserProfile } from '../../services/api';
+import { completeUserProfile } from '../../routes/user';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 

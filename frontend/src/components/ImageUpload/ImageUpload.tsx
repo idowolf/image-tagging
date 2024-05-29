@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Button, Container, Typography } from '@mui/material';
-import styled from 'styled-components';
-import { uploadImage } from '../../services/api';
+import { uploadImage } from '../../routes/images';
 import UploadContainer from './UploadContainer';
 import FileInput from './FileInput';
 import Alerts from './Alerts';

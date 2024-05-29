@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { searchImages } from '../services/api';
+import { searchImages } from '../routes/images';
 import { isSetsEqual } from '../extensions/set';
 
 export const useImageSearch = (initialTags: Set<string> = new Set()) => {
@@ -15,7 +15,7 @@ export const useImageSearch = (initialTags: Set<string> = new Set()) => {
     const data = {
       tags: newTags,
       pageNumber: newSearch ? 1 : page,
-      pageSize: 10
+      pageSize: 20
     };
 
     try {
