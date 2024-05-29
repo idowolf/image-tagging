@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { convertTextToTags } from '../../routes/tags';
 import { useImageSearch } from '../../hooks/useImageSearch';
-import { SearchResultsContainer } from './styles';
+import { SearchResultsContainer, TagsContainer } from './styles';
 import SearchResults from './SearchResults';
 import CustomAutocompleteField from './CustomAutocompleteField';
+import { Grid, Chip, Typography } from '@mui/material';
 
 /**
  * Component for freeform search functionality.
@@ -13,6 +14,7 @@ const FreeformSearch: React.FC = () => {
   const { searchResult, handleSearch, setPage, hasMore } = useImageSearch();
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
+  const [resolvedTags, setResolvedTags] = useState<string[]>([]);
 
   useEffect(() => {
     const history = localStorage.getItem('searchHistory');
@@ -29,6 +31,7 @@ const FreeformSearch: React.FC = () => {
     try {
       const response = await convertTextToTags({ text: searchInput, topTagsCount: 1000 });
       const convertedTags = response.data;
+      setResolvedTags(convertedTags);
       handleSearch(convertedTags);
     } catch (error) {
       console.error('Search failed', error);
@@ -53,6 +56,16 @@ const FreeformSearch: React.FC = () => {
         onSearchClick={initiateSearch}
         autocompleteOptions={searchHistory}
         onOptionSelected={(option) => setSearchInput(option)} />
+      {resolvedTags.length > 0 && <TagsContainer>
+        <Typography>These are the tags we found based on your text:</Typography>
+        <Grid container spacing={1} style={{ display: 'flex', justifyContent: 'center' }}>
+          {resolvedTags.map((tag, index) => (
+            <Grid item key={index}>
+              <Chip label={tag} deleteIcon={<div />} />
+            </Grid>
+          ))}
+        </Grid>
+      </TagsContainer>}
       <SearchResults searchResult={searchResult} handleSearch={handleSearch} setPage={setPage} hasMore={hasMore} />
     </SearchResultsContainer>
   );
