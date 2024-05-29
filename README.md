@@ -100,6 +100,16 @@ This project is a comprehensive web application designed for managing and taggin
 
     - Remember to update `backend/.env` if you do not use port 3000 or localhost.
 
+8. **Remember to set .env files**
+
+    - Adjust both `frontend/.env` and `backend/.env` so that all communications are performed correctly.
+
+## Notes
+
+    - Google sign-in will not work for you as the project on Google Cloud Console only has one test user, which is mine. Either contact me to add your email as a test user, or create a new Google Cloud project and create OAuth 2.0 Client ID for it, then update the .env files appropriately, or ignore the feature for now.
+
+    - 
+
 ## Additional Information
 
 For more detailed information on each part of the application, refer to the respective directories and files in the project repository.
