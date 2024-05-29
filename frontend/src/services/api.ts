@@ -38,8 +38,8 @@ export const authWithGoogle = (data: { credential: string, clientId: string }) =
   return api.post('/auth/google', data);
 }
 
-export const searchImages = (data: { tags: string[], pageNumber: number, pageSize: number }) => {
-  return api.post('/images/search', data);
+export const searchImages = (data: { tags: Set<string>, pageNumber: number, pageSize: number }) => {
+  return api.post('/images/search', { tags: Array.from(data.tags), pageNumber: data.pageNumber, pageSize: data.pageSize });
 };
 
 export const autocompleteTags = (query: string) => {

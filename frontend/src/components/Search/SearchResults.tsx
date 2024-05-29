@@ -49,21 +49,20 @@ const ImageLabel = styled.div`
 `;
 
 interface SearchResultsProps {
-    selectedTags: string[];
     searchResult: any[];
-    handleSearch: (newSearch: boolean) => void;
+    handleSearch: () => void;
     setPage: React.Dispatch<React.SetStateAction<number>>;
     hasMore: boolean;
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({ selectedTags, searchResult, handleSearch, setPage, hasMore }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({ searchResult, handleSearch, setPage, hasMore }) => {
 
 
     useEffect(() => {
         const handleScroll = (event: any) => {
             const bottom = event.target.scrollHeight - event.target.scrollTop === event.target.clientHeight;
             if (bottom && hasMore) {
-                handleSearch(false);
+                handleSearch();
                 setPage(prevPage => prevPage + 1);
             }
         };
