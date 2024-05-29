@@ -39,7 +39,7 @@ describe('Image Controller', () => {
       (fs.promises.readFile as jest.Mock).mockResolvedValue(imgBuffer);
       (addImage as jest.Mock).mockResolvedValue(image);
       (addImageToQueue as jest.Mock).mockResolvedValue(undefined);
-      req.file = { path: 'test/path', originalname: 'test.jpg' } as Express.Multer.File;
+      req.file = { path: 'test/path', originalname: 'test.jpg', mimetype: 'image/jpeg' } as Express.Multer.File;
 
       await uploadImage(req as Request, res as Response);
 
@@ -60,7 +60,7 @@ describe('Image Controller', () => {
     it('should return 500 if there is an error', async () => {
       const errorMessage = 'Internal Server Error';
       (fs.promises.readFile as jest.Mock).mockRejectedValue(new Error(errorMessage));
-      req.file = { path: 'test/path', originalname: 'test.jpg' } as Express.Multer.File;
+      req.file = { path: 'test/path', originalname: 'test.jpg', mimetype: 'image/jpeg' } as Express.Multer.File;
 
       await uploadImage(req as Request, res as Response);
 
