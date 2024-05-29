@@ -5,7 +5,12 @@ import { useAuth } from '../../context/AuthContext';
 import { useEffect } from 'react';
 
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT as string;
-console.log("clientId: ", clientId);
+
+/**
+ * Renders a Google authentication button.
+ * 
+ * @returns The GoogleAuth component.
+ */
 const GoogleAuth = () => {
     const navigate = useNavigate();
     const { setToken, user } = useAuth();
@@ -16,6 +21,11 @@ const GoogleAuth = () => {
         }
     }, [user]);
     
+    /**
+     * Handles the successful authentication response from Google.
+     * 
+     * @param response - The authentication response object.
+     */
     const handleSuccess = async (response: any) => {
         const credential = response.credential;
         const clientId = response.clientId;
@@ -27,9 +37,11 @@ const GoogleAuth = () => {
         } catch (error) {
             console.error('Login failed', error);
         }
-
     };
 
+    /**
+     * Handles the error during authentication.
+     */
     const handleError = () => {
         console.log('Login Failed');
     };

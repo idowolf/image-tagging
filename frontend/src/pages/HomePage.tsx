@@ -1,8 +1,11 @@
 import React from 'react';
 import { Button, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { PageContainer } from './styles';
 
+/**
+ * Renders the home page of the Image Tagging Platform.
+ * @returns The rendered home page component.
+ */
 const HomePage: React.FC = () => {
     return (
         <PageContainer>

@@ -5,6 +5,10 @@ import { Typography } from '@mui/material';
 import { PageContainer } from './styles';
 
 
+/**
+ * Renders the login page component.
+ * @returns The rendered login page component.
+ */
 const LoginPage: React.FC = () => {
   return (
     <PageContainer className='auth'>

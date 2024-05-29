@@ -6,6 +6,14 @@ interface FileInputProps {
     file: File | null;
 }
 
+/**
+ * Renders a file input component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {File} props.file - The selected file.
+ * @returns {JSX.Element} - The rendered component.
+ */
 const FileInput: React.FC<FileInputProps> = ({ file }) => {
     return (
         <FileInputDiv>

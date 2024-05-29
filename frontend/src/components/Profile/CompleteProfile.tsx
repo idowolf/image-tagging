@@ -4,6 +4,11 @@ import { completeUserProfile } from '../../routes/user';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
+/**
+ * Represents the component for completing user profile details.
+ * @param {string} userId - The ID of the user.
+ * @returns {React.FC} The CompleteProfile component.
+ */
 const CompleteProfile: React.FC<{ userId: string }> = ({ userId }) => {
     const [fullName, setFullName] = useState('');
     const [department, setDepartment] = useState('');
@@ -21,6 +26,10 @@ const CompleteProfile: React.FC<{ userId: string }> = ({ userId }) => {
         }
     }, [user]);
 
+    /**
+     * Handles the completion of the user profile.
+     * @returns {Promise<void>} A promise that resolves when the profile is completed.
+     */
     const handleCompleteProfile = async () => {
         try {
             const user = await completeUserProfile({ userId, department, team, role });

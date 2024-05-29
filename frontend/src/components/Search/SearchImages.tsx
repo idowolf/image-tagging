@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Container, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import FreeformSearch from './FreeformSearch';
 import SearchSelector from './SearchSelector';
 import TagSearch from './TagSearch';
 
+/**
+ * Renders the search images component.
+ * @returns The search images component.
+ */
 const SearchImages: React.FC = () => {
     const [searchType, setSearchType] = useState<'tags' | 'freeform'>('tags');
 

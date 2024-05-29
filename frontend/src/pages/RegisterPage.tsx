@@ -4,6 +4,10 @@ import GoogleAuthButton from '../components/Auth/GoogleAuthButton';
 import { Typography } from '@mui/material';
 import { PageContainer } from './styles';
 
+/**
+ * Renders the RegisterPage component.
+ * @returns JSX.Element representing the RegisterPage component.
+ */
 const RegisterPage: React.FC = () => {
   return (
     <PageContainer className='auth'>

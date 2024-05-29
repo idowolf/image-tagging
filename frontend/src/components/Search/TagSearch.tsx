@@ -6,6 +6,9 @@ import { SearchResultsContainer, TagsContainer } from './styles';
 import SearchResults from './SearchResults';
 import CustomAutocompleteField from './CustomAutocompleteField';
 
+/**
+ * Component for searching images by tags.
+ */
 const TagSearch: React.FC = () => {
     const { searchResult, handleSearch, setPage, hasMore } = useImageSearch();
     const [topTags, setTopTags] = useState<string[]>([]);
@@ -14,6 +17,9 @@ const TagSearch: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
 
+    /**
+     * Fetches the top tags from the server and sets the state.
+     */
     useEffect(() => {
         (async () => {
             try {
@@ -27,12 +33,18 @@ const TagSearch: React.FC = () => {
         })();
     }, []);
 
+    /**
+     * Handles the search when the selected tags change.
+     */
     useEffect(() => {
         if (selectedTags.size > 0) {
             handleSearch(selectedTags);
         }
     }, [selectedTags]);
 
+    /**
+     * Fetches tag suggestions based on the input value.
+     */
     const fetchSuggestions = useCallback(
         debounce(async (input: string) => {
             try {
@@ -46,6 +58,9 @@ const TagSearch: React.FC = () => {
         []
     );
 
+    /**
+     * Handles the input change event.
+     */
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value.toLowerCase();
         setSearchInput(value);
@@ -58,6 +73,9 @@ const TagSearch: React.FC = () => {
         }
     };
 
+    /**
+     * Handles the selection of a tag.
+     */
     const handleTagSelect = (tag: string) => {
         if (!selectedTags.has(tag)) {
             const newSelectedTags = new Set(selectedTags);
@@ -69,12 +87,18 @@ const TagSearch: React.FC = () => {
         setAutocompleteOptions(topTags);
     };
 
+    /**
+     * Handles the deletion of a tag.
+     */
     const handleTagDelete = (tagToDelete: string) => {
         const newSelectedTags = new Set(selectedTags);
         newSelectedTags.delete(tagToDelete);
         setSelectedTags(newSelectedTags);
     };
 
+    /**
+     * Handles the key down event.
+     */
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && searchInput) {
             if (!selectedTags.has(searchInput) && autocompleteOptions.includes(searchInput)) {

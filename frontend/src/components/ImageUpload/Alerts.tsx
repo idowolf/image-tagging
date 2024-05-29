@@ -7,6 +7,13 @@ interface AlertProps {
   onClose: () => void;
 }
 
+/**
+ * Alerts component displays a snackbar with a message and severity.
+ * 
+ * @param message - The message to be displayed in the snackbar.
+ * @param severity - The severity of the alert (e.g., "error", "warning", "info", "success").
+ * @param onClose - Callback function to be called when the snackbar is closed.
+ */
 const Alerts: React.FC<AlertProps> = ({ message, severity, onClose }) => {
   return (
     <Snackbar open={!!message} autoHideDuration={6000} onClose={onClose}>

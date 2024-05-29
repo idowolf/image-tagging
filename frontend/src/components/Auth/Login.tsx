@@ -6,6 +6,11 @@ import { useAuth } from '../../context/AuthContext';
 import { isEmailValid, isPasswordValid } from '../../utils/dataValidation';
 import { FormContainer } from './styles';
 
+/**
+ * Login component for user authentication.
+ * 
+ * @returns React functional component
+ */
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,6 +18,11 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setToken } = useAuth();
 
+  /**
+   * Handles the login process.
+   * 
+   * @returns void
+   */
   const handleLogin = async () => {
     try {
       const response = await loginUser({ email, password });

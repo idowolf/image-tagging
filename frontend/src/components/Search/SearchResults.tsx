@@ -8,9 +8,17 @@ interface SearchResultsProps {
     hasMore: boolean;
 }
 
+/**
+ * Renders the search results component.
+ *
+ * @component
+ * @param {Object} searchResult - The array of search results.
+ * @param {Function} handleSearch - The function to handle search.
+ * @param {Function} setPage - The function to set the current page.
+ * @param {boolean} hasMore - Indicates if there are more search results available.
+ * @returns {JSX.Element} The search results component.
+ */
 const SearchResults: React.FC<SearchResultsProps> = ({ searchResult, handleSearch, setPage, hasMore }) => {
-
-
     useEffect(() => {
         const handleScroll = (event: any) => {
             const bottom = event.target.scrollHeight - event.target.scrollTop === event.target.clientHeight;

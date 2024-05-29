@@ -6,6 +6,15 @@ interface SearchSuggestionsProps {
   onTagClick: (tag: string) => void;
 }
 
+/**
+ * Renders a list of search suggestions.
+ *
+ * @component
+ * @param {SearchSuggestionsProps} props - The component props.
+ * @param {string[]} props.suggestions - The array of search suggestions.
+ * @param {(suggestion: string) => void} props.onTagClick - The function to handle tag click event.
+ * @returns {JSX.Element} The rendered component.
+ */
 const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ suggestions, onTagClick }) => {
   return (
     <Paper elevation={3} style={{ position: 'absolute', width: '100%', zIndex: 1 }}>

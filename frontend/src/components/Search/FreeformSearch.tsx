@@ -5,6 +5,9 @@ import { SearchResultsContainer } from './styles';
 import SearchResults from './SearchResults';
 import CustomAutocompleteField from './CustomAutocompleteField';
 
+/**
+ * Component for freeform search functionality.
+ */
 const FreeformSearch: React.FC = () => {
   const [searchInput, setSearchInput] = useState<string>('');
   const { searchResult, handleSearch, setPage, hasMore } = useImageSearch();

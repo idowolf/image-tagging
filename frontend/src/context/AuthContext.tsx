@@ -19,15 +19,19 @@ const AuthContext = createContext<AuthContextProps>({
 
 export const useAuth = () => useContext(AuthContext);
 
+/**
+ * Provides authentication context for the application.
+ * @param children - The child components to be wrapped by the AuthProvider.
+ */
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
 
-  useEffect(() => {
-    fetchProfile(token);
-  }, [token]);
-
+  /**
+   * Fetches the user profile using the provided token.
+   * @param token - The authentication token.
+   */
   const fetchProfile = async (token: string | null) => {
     if (!token) {
       setLoading(false);
@@ -44,11 +48,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  /**
+   * Logs out the user by removing the token and resetting the user state.
+   */
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
     setToken(null);
   }
+
+  useEffect(() => {
+    fetchProfile(token);
+  }, [token]);
 
   return (
     <AuthContext.Provider value={{ user, setUser, setToken, logout, loading }}>

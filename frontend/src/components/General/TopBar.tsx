@@ -16,6 +16,10 @@ const StyledButton = styled(Button)`
     margin-right: 20px;
 `;
 
+/**
+ * Represents the top bar component of the application.
+ * This component displays the navigation links and user information.
+ */
 const TopBar: React.FC = () => {
     const { user, logout } = useAuth();
 

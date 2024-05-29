@@ -16,6 +16,20 @@ interface CustomAutocompleteFieldProps {
     onOptionSelected: (option: string) => void;
 }
 
+/**
+ * CustomAutocompleteField component.
+ * 
+ * @param value - The current value of the autocomplete field.
+ * @param onChange - The callback function to handle value changes.
+ * @param handleKeyDown - The callback function to handle keydown events.
+ * @param showIcon - Determines whether to show the search icon.
+ * @param placeholder - The placeholder text for the autocomplete field.
+ * @param setOpen - The callback function to handle opening/closing of the autocomplete options.
+ * @param open - Determines whether the autocomplete options are open.
+ * @param onSearchClick - The callback function to handle search button click.
+ * @param autocompleteOptions - The array of autocomplete options.
+ * @param onOptionSelected - The callback function to handle selection of an autocomplete option.
+ */
 const CustomAutocompleteField: React.FC<CustomAutocompleteFieldProps> = ({ value, onChange, handleKeyDown, showIcon = true, placeholder, setOpen, open, onSearchClick, autocompleteOptions, onOptionSelected }) => {
     return (
             <SearchContainer>

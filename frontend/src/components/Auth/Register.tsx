@@ -6,6 +6,9 @@ import { isEmailValid, isPasswordValid } from '../../utils/dataValidation';
 import { FormContainer } from './styles';
 import { useAuth } from '../../context/AuthContext';
 
+/**
+ * Component for user registration.
+ */
 const Register: React.FC = () => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -14,6 +17,9 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
   const { setToken } = useAuth();
   
+  /**
+   * Handles the registration process when the user clicks the register button.
+   */
   const handleRegister = async () => {
     try {
       const response = await registerUser({ fullName, email, password });

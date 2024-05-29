@@ -1,10 +1,16 @@
 import axios from 'axios';
 
+/**
+ * Axios instance for making API requests.
+ */
 const api = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_URL}/api`,
   withCredentials: true
 });
 
+/**
+ * Interceptor for adding the Authorization header to the request.
+ */
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -18,6 +24,9 @@ api.interceptors.request.use(
   }
 );
 
+/**
+ * Interceptor for handling 401 Unauthorized responses when JWT expires or fails.
+ */
 api.interceptors.response.use(
   (response) => {
     return response;
@@ -32,6 +41,9 @@ api.interceptors.response.use(
   }
 );
 
+/**
+ * Interceptor for handling 429 Too Many Requests responses.
+ */
 api.interceptors.response.use(
   (response) => {
     return response;

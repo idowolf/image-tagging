@@ -7,6 +7,12 @@ interface ProtectedRouteProps {
     element: React.ReactElement;
 }
 
+/**
+ * A protected route component that redirects users based on their authentication status and profile completeness.
+ * @param strict - Determines whether the user's profile must be fully validated.
+ * @param element - The component to render if the user is authenticated and their profile is valid.
+ * @returns The protected route component.
+ */
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ strict = true, element }) => {
     const { user, loading } = useAuth();
 

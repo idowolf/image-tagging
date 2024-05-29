@@ -6,6 +6,15 @@ interface SearchSelectorProps {
   setSearchType: (type: 'tags' | 'freeform') => void;
 }
 
+/**
+ * Renders a search selector component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.searchType - The current search type.
+ * @param {Function} props.setSearchType - The function to set the search type.
+ * @returns {JSX.Element} The rendered search selector component.
+ */
 const SearchSelector: React.FC<SearchSelectorProps> = ({ searchType, setSearchType }) => {
   return (
     <ToggleButtonGroup
