@@ -5,6 +5,7 @@ import { getTopTags, autocompleteTags } from '../../services/api';
 import { useImageSearch } from '../../hooks/useImageSearch';
 import { SearchContainer, AutocompletePaper, SearchResultsContainer, TagsContainer, SearchIconPadding } from './styles';
 import SearchResults from './SearchResults';
+import CustomAutocompleteField from './CustomAutocompleteField';
 
 const TagSearch: React.FC = () => {
     const { searchResult, handleSearch, setPage, hasMore } = useImageSearch();
@@ -53,6 +54,7 @@ const TagSearch: React.FC = () => {
     };
 
     const handleTagSelect = (tag: string) => {
+        console.log(tag);
         if (!selectedTags.has(tag)) {
             const newSelectedTags = new Set(selectedTags);
             newSelectedTags.add(tag);
@@ -64,7 +66,6 @@ const TagSearch: React.FC = () => {
     };
 
     const handleTagDelete = (tagToDelete: string) => {
-        // Set selected tags to the same set without tagToDelete
         const newSelectedTags = new Set(selectedTags);
         newSelectedTags.delete(tagToDelete);
         setSelectedTags(newSelectedTags);
@@ -85,40 +86,17 @@ const TagSearch: React.FC = () => {
 
     return (
         <SearchResultsContainer>
-            <SearchContainer>
-                <TextField
-                    variant="outlined"
-                    placeholder="Type to find tags..."
-                    fullWidth
-                    value={searchInput}
-                    style={{ padding: '0' }}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                    onFocus={() => setOpen(true)}
-                    onBlur={() => setTimeout(() => setOpen(false), 100)}
-                    InputProps={{
-                        style: SearchIconPadding,
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={() => handleSearch(selectedTags)}>
-                                    <SearchIcon color="primary" />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                {open && (
-                    <AutocompletePaper>
-                        <List>
-                            {autocompleteOptions.map((option, index) => (
-                                <ListItem key={index} onMouseDown={() => handleTagSelect(option)}>
-                                    <ListItemText primary={option} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </AutocompletePaper>
-                )}
-            </SearchContainer>
+            <CustomAutocompleteField
+                value={searchInput}
+                onChange={handleInputChange}
+                handleKeyDown={handleKeyDown}
+                placeholder={'Type to find tags...'}
+                open={open}
+                setOpen={setOpen}
+                onSearchClick={() => handleSearch(selectedTags)}
+                autocompleteOptions={autocompleteOptions}
+                onOptionSelected={handleTagSelect}
+            />
             <TagsContainer>
                 <Grid container spacing={1}>
                     {Array.from(selectedTags).map((tag, index) => (

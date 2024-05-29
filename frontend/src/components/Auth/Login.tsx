@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { TextField, Button, Container, Typography } from '@mui/material';
+import { TextField, Button, Container, Typography, Snackbar, Alert } from '@mui/material';
 import { loginUser } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { isEmailValid, isPasswordValid } from '../../utils/dataValidation';
+import { FormContainer } from './styles';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { setToken } = useAuth();
 
@@ -18,11 +20,12 @@ const Login: React.FC = () => {
       navigate('/');
     } catch (error) {
       console.error('Login failed', error);
+      setError('Login failed. Please try again.');
     }
   };
 
   return (
-    <Container>
+    <FormContainer>
       <Typography variant="h4" gutterBottom>Login</Typography>
       <TextField
         label="Email"
@@ -44,10 +47,16 @@ const Login: React.FC = () => {
         color="primary"
         onClick={handleLogin}
         disabled={!isEmailValid(email) || !isPasswordValid(password)}
+        sx={{ marginTop: 2 }}
       >
         Login
       </Button>
-    </Container>
+      <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError(null)}>
+        <Alert onClose={() => setError(null)} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>
+      </Snackbar>
+    </FormContainer>
   );
 };
 

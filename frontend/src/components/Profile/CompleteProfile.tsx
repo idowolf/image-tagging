@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, Button, Container, Typography } from '@mui/material';
 import { completeUserProfile } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const CompleteProfile: React.FC<{ userId: string }> = ({ userId }) => {
+    const [fullName, setFullName] = useState('');
     const [department, setDepartment] = useState('');
     const [team, setTeam] = useState('');
     const [role, setRole] = useState('');
     const navigate = useNavigate();
-    const { setUser } = useAuth();
-    
+    const { user, setUser } = useAuth();
+
+    useEffect(() => {
+        if (user) {
+            setFullName(user.fullName);
+            setDepartment(user.department);
+            setTeam(user.team);
+            setRole(user.role);
+        }
+    }, [user]);
+
     const handleCompleteProfile = async () => {
         try {
             const user = await completeUserProfile({ userId, department, team, role });
@@ -23,7 +33,14 @@ const CompleteProfile: React.FC<{ userId: string }> = ({ userId }) => {
 
     return (
         <Container>
-            <Typography variant="h4" gutterBottom>Complete Profile</Typography>
+            <Typography variant="h4" gutterBottom>Profile Details</Typography>
+            <TextField
+                label="Full Name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                fullWidth
+                margin="normal"
+            />
             <TextField
                 label="Department"
                 value={department}
@@ -45,7 +62,7 @@ const CompleteProfile: React.FC<{ userId: string }> = ({ userId }) => {
                 fullWidth
                 margin="normal"
             />
-            <Button variant="contained" color="primary" onClick={handleCompleteProfile}>Complete Profile</Button>
+            <Button variant="contained" color="primary" disabled={!fullName || !department || !team || !role} onClick={handleCompleteProfile} sx={{ marginTop: 2 }}>Complete Profile</Button>
         </Container>
     );
 };

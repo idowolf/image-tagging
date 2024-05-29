@@ -8,12 +8,10 @@ const SearchImages: React.FC = () => {
     const [searchType, setSearchType] = useState<'tags' | 'freeform'>('tags');
 
     return (
-        <Container>
-            <Box textAlign="center" mt={5}>
+            <Box textAlign="center" mt={5} style={{ display: 'flex', flexDirection: 'column', width: '100%', margin: 'auto', justifyContent: 'center', gridGap: '20px' }}>
                 <SearchSelector searchType={searchType} setSearchType={setSearchType} />
                 {searchType === 'tags' ? <TagSearch /> : <FreeformSearch />}
             </Box>
-        </Container>
     );
 };
 

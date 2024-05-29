@@ -42,7 +42,7 @@ export const searchFaissIndex = async (embeddings: number[][], page: number, res
         const faissResults = index.search(flattenedEmbeddings, searchResultsCount);
         // Filter the labels whose distance is smaller than 0.3, unless there aren't any, in which case coerce at least the smallest distance + 0.2
         const minDistance = Math.min(...faissResults.distances);
-        const threshold = Math.max(minDistance + 0.1, 0.3);
+        const threshold = Math.max(minDistance + 0.2, 0.3);
         const filteredLabels = faissResults.labels.filter((_, i) => faissResults.distances[i] < threshold);
         const paginatedLabels = filteredLabels.slice(offset, offset + resultsPerPage);
         const results = await Image.find({ faissIndex: { $in: paginatedLabels } });

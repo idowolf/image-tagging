@@ -14,7 +14,7 @@ export const UploadDiv = styled.div`
   }
 `;
 
-export const ImageUploadDiv = styled(Container)`
+export const ImageUploadDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

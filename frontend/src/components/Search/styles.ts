@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Box, Paper } from '@mui/material';
+import { Box, IconButton, Paper } from '@mui/material';
 
 export const SearchContainer = styled(Box)`
   position: relative;
@@ -26,11 +26,11 @@ export const SearchResultsContainer = styled(Box)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 3rem;
+  gap: 20px;
+  width: 100%;
 `;
 
 export const TagsContainer = styled(Box)`
-  margin-top: 2rem;
   width: 90%;
   @media (min-width: 600px) {
     width: 70%;
@@ -44,3 +44,48 @@ export const TagsContainer = styled(Box)`
 `;
 
 export const SearchIconPadding =  { padding: '4px 14px 4px 4px', height: '46px', };
+
+export const ImagesSection = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+export const ImageResultContainer = styled.div`
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+  overflow: hidden;
+  display: inline-block;
+
+  &:hover .downloadIcon {
+    display: block;
+  }
+`;
+
+export const Image = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+`;
+
+export const DownloadButton = styled(IconButton)`
+  && {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: none;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 5px;
+  }
+`;
+
+export const ImageLabel = styled.div`
+  text-align: center;
+  margin-top: 5px;
+`;

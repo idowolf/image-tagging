@@ -11,6 +11,7 @@ const SearchSelector: React.FC<SearchSelectorProps> = ({ searchType, setSearchTy
     <ToggleButtonGroup
       value={searchType}
       exclusive
+      style={{margin: 'auto'}}
       onChange={(event, newSearchType) => {
         if (newSearchType !== null) {
           setSearchType(newSearchType);

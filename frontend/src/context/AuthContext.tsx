@@ -5,6 +5,7 @@ interface AuthContextProps {
   user: any;
   setUser: React.Dispatch<React.SetStateAction<any>>;
   setToken: React.Dispatch<React.SetStateAction<any>>;
+  logout: React.Dispatch<React.SetStateAction<any>>;
   loading: boolean;
 }
 
@@ -12,6 +13,7 @@ const AuthContext = createContext<AuthContextProps>({
   user: null,
   setUser: () => {},
   setToken: () => {},
+  logout: () => {},
   loading: true,
 });
 
@@ -42,8 +44,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    setToken(null);
+  }
+
   return (
-    <AuthContext.Provider value={{ user, setUser, setToken, loading }}>
+    <AuthContext.Provider value={{ user, setUser, setToken, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

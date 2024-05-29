@@ -1,53 +1,6 @@
 import React, { useEffect } from 'react';
-import { IconButton } from '@mui/material';
-import styled from 'styled-components';
 import DownloadIcon from '@mui/icons-material/Download';
-
-const ImagesSection = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-`;
-
-const ImageResultContainer = styled.div`
-  position: relative;
-  width: 150px;
-  height: 150px;
-  margin: 10px;
-  overflow: hidden;
-  display: inline-block;
-
-  &:hover .downloadIcon {
-    display: block;
-  }
-`;
-
-const Image = styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px; // Add this line to round the corners
-`;
-
-const DownloadButton = styled(IconButton)`
-  && {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    display: none;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    padding: 5px;
-  }
-`;
-
-const ImageLabel = styled.div`
-  text-align: center;
-  margin-top: 5px;
-`;
-
+import { ImagesSection, ImageResultContainer, DownloadButton, ImageLabel, Image } from './styles';
 interface SearchResultsProps {
     searchResult: any[];
     handleSearch: () => void;

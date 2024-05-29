@@ -1,14 +1,15 @@
 import React from 'react';
 import CompleteProfile from '../components/Profile/CompleteProfile';
 import { useParams } from 'react-router-dom';
+import { PageContainer } from './styles';
 
 const CompleteProfilePage: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
 
   return (
-    <div>
+    <PageContainer className='auth'>
       <CompleteProfile userId={userId!} />
-    </div>
+    </PageContainer>
   );
 };
 

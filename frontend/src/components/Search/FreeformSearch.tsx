@@ -3,8 +3,9 @@ import { Box, TextField, IconButton, InputAdornment, Autocomplete } from '@mui/m
 import SearchIcon from '@mui/icons-material/Search';
 import { convertTextToTags } from '../../services/api';
 import { useImageSearch } from '../../hooks/useImageSearch';
-import { SearchContainer, SearchIconPadding, SearchResultsContainer } from './styles';
+import { SearchIconPadding, SearchResultsContainer } from './styles';
 import SearchResults from './SearchResults';
+import CustomAutocompleteField from './CustomAutocompleteField';
 
 const FreeformSearch: React.FC = () => {
   const [searchInput, setSearchInput] = useState<string>('');
@@ -34,48 +35,23 @@ const FreeformSearch: React.FC = () => {
 
   return (
     <SearchResultsContainer>
-      <SearchContainer>
-        <Autocomplete
-          freeSolo
-          fullWidth
-          options={searchHistory}
-          value={searchInput}
-          onInputChange={(_event, newInputValue) => setSearchInput(newInputValue || '')}
-          renderInput={(params) => (
-            <TextSearchField params={params} initiateSearch={() => initiateSearch()} />
-          )}
-        />
-      </SearchContainer>
+      <CustomAutocompleteField
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+        placeholder="Enter text to search..."
+        handleKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            initiateSearch();
+          }
+        }}
+        open={false}
+        setOpen={() => {}}
+        onSearchClick={initiateSearch}
+        autocompleteOptions={searchHistory}
+        onOptionSelected={(option) => setSearchInput(option)} />
       <SearchResults searchResult={searchResult} handleSearch={handleSearch} setPage={setPage} hasMore={hasMore} />
     </SearchResultsContainer>
   );
 };
-
-interface TextSearchFieldProps {
-  params: any;
-  initiateSearch: () => void;
-}
-
-const TextSearchField: React.FC<TextSearchFieldProps> = ({ params, initiateSearch }) => {
-  return (
-    <TextField
-      {...params}
-      fullWidth
-      style={{ padding: '0', height: '46px' }}
-      variant="outlined"
-      placeholder="Enter your search..."
-      InputProps={{
-        style: SearchIconPadding,
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton onClick={() => initiateSearch()}>
-              <SearchIcon color="primary" />
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-    />
-  )
-}
 
 export default FreeformSearch;
