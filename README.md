@@ -108,7 +108,7 @@ This project is a comprehensive web application designed for managing and taggin
 
     - Google sign-in will not work for you as the project on Google Cloud Console only has one test user, which is mine. Either contact me to add your email as a test user, or create a new Google Cloud project and create OAuth 2.0 Client ID for it, then update the .env files appropriately, or ignore the feature for now.
 
-    - 
+    - Additional improvements for scalability: Setup the remote server with sharding on MongoDB (you may find sample config files in the `mongo_conf` directory), load balancing using NGINX.
 
 ## Additional Information
 
