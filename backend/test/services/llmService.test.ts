@@ -9,7 +9,7 @@ const mock = new MockAdapter(axios);
 describe('generateTags', () => {
     const imageBase64 = 'dummyBase64ImageString';
     const apiUrl = `${LLM_SERVER_URL}/api/generate`;
-    const prompt = 'You are an assistive AI tool at a mobile game company, aiding graphic designers in finding graphics by tags. Generate 20 or less tags for the attached image describing its contents, such as describing backgrounds, characters, objects and texts, in generic terms. Examples: \'pig\', \'house\', or \'snow\'. No need for tags that apply to all images in this context, such as \'Game\' or \'App\'. Return 20 or less tags as an array, formatted as JSON: {"tags": ["tag1", "tag2", ...]}.';
+    const prompt = 'You are an assistive AI tool at a mobile game company, aiding graphic designers in finding graphics by tags. Generate 20 or less tags for the attached image describing its contents, such as describing backgrounds, characters, objects and texts. Each tag should be ONE word. Examples: \'pig\', \'house\', or \'snow\'. No need for tags that apply to all images in this context, such as \'Game\' or \'App\'. Return 20 or less tags as an array, formatted as JSON: {"tags": ["tag1", "tag2", ...]}.';
 
     afterEach(() => {
         // Reset the mock after each test

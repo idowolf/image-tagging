@@ -53,6 +53,7 @@ const Login: React.FC = () => {
         margin="normal"
       />
       <Button
+        data-testid="login-button"
         variant="contained"
         color="primary"
         onClick={handleLogin}
