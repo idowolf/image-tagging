@@ -17,7 +17,7 @@ const router = Router();
  * @description Converts text to tags.
  * @header {string} Authorization - Bearer token for authentication.
  * @body {string} text - The text to convert to tags.
- * @body {number} topTags - The number of top tags to generate.
+ * @body {number} topTagsCount - The number of top tags to search from.
  */
 router.post('/convertTextToTags', authMiddleware, createCacheKeyMiddleware, cacheMiddleware, saveCacheMiddleware(CACHE_TIMEOUT), convertTextToTags);
 

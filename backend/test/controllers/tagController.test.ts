@@ -37,7 +37,7 @@ describe('Tag Controller', () => {
 
             await convertTextToTags(req as Request, res as Response);
 
-            expect(generateTagsFromText).toHaveBeenCalledWith('some text');
+            expect(generateTagsFromText).toHaveBeenCalledWith('some text', 1000);
             expect(statusMock).toHaveBeenCalledWith(200);
             expect(jsonMock).toHaveBeenCalledWith(tags);
         });
@@ -49,7 +49,7 @@ describe('Tag Controller', () => {
 
             await convertTextToTags(req as Request, res as Response);
 
-            expect(generateTagsFromText).toHaveBeenCalledWith('some text');
+            expect(generateTagsFromText).toHaveBeenCalledWith('some text', 1000);
             expect(statusMock).toHaveBeenCalledWith(500);
             expect(jsonMock).toHaveBeenCalledWith({ error: errorMessage });
         });

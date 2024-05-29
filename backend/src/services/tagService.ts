@@ -46,12 +46,12 @@ export const upsertTags = async (tags: string[]) => {
 /**
  * Generates tags from text.
  * @param {string} text - The text to convert to tags.
- * @param {string[]} topTags - The top tags to consider.
+ * @param {number} topTagsCount - The number of top tags to search from.
  * @returns {Promise<string[]>} The generated tags.
  */
-export const generateTagsFromText = async (text: string): Promise<string[]> => {
+export const generateTagsFromText = async (text: string, topTagsCount: number): Promise<string[]> => {
     try {
-        const response = await getRelevantTags(text, await getTopTags(1000));
+        const response = await getRelevantTags(text, await getTopTags(topTagsCount));
         return response;
     } catch (error) {
         console.error('Error generating tags:', error);

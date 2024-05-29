@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // Adjust the base URL as needed
+  baseURL: 'http://localhost:5000/api',
   withCredentials: true
 });
 
@@ -48,4 +48,8 @@ export const autocompleteTags = (query: string) => {
 
 export const getTopTags = () => {
   return api.get('/tags/top_tags?limit=6');
+}
+
+export const convertTextToTags = (data: { text: string, topTagsCount: number }) => {
+  return api.post('/tags/convertTextToTags', data);
 }

@@ -19,7 +19,6 @@ const cacheMiddleware = async (_req: Request, res: Response, next: NextFunction)
         if (cachedData) {
             return res.status(200).json(JSON.parse(cachedData));
         } else {
-            res.locals.cacheKey = cacheKey;
             next();
         }
     } catch (error) {

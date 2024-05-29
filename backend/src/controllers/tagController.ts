@@ -10,14 +10,16 @@ import { autocomplete, generateTagsFromText, getTopTags } from '../services/tagS
  * @param {Request} req - The request object.
  * @param {Response} res - The response object.
  * @body {string} text - The text to convert to tags.
+ * @body {number} topTagsCount - The number of top tags to search from.
  */
 export const convertTextToTags = async (req: Request, res: Response) => {
-    const { text } = req.body;
+    const { text, topTagsCount } = req.body;
     if (!text) {
         return res.status(400).json({ error: 'Text parameter is required' });
     }
+    const count = topTagsCount || 1000;
     try {
-        const tags = await generateTagsFromText(text);
+        const tags = await generateTagsFromText(text, count);
         res.status(200).json(tags);
     } catch (error: any) {
         res.status(500).json({ error: error.message });
