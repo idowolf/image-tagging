@@ -12,6 +12,7 @@ const FreeformSearch: React.FC = () => {
   const [searchInput, setSearchInput] = useState<string>('');
   const { searchResult, handleSearch, setPage, hasMore } = useImageSearch();
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const history = localStorage.getItem('searchHistory');
@@ -34,19 +35,21 @@ const FreeformSearch: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && searchInput) {
+      initiateSearch();
+    }
+  };
+
   return (
     <SearchResultsContainer>
       <CustomAutocompleteField
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         placeholder="Enter text to search..."
-        handleKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            initiateSearch();
-          }
-        }}
-        open={false}
-        setOpen={() => {}}
+        handleKeyDown={handleKeyDown}
+        open={open}
+        setOpen={setOpen}
         onSearchClick={initiateSearch}
         autocompleteOptions={searchHistory}
         onOptionSelected={(option) => setSearchInput(option)} />

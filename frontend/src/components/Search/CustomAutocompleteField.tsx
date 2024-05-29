@@ -38,6 +38,7 @@ const CustomAutocompleteField: React.FC<CustomAutocompleteFieldProps> = ({ value
                     placeholder={placeholder}
                     fullWidth
                     value={value}
+                    autoComplete='off'
                     style={{ padding: '0' }}
                     onChange={onChange}
                     onKeyDown={handleKeyDown}
