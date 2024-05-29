@@ -16,6 +16,10 @@ import { addImageToQueue } from '../services/queueService';
 export const uploadImage = async (req: Request, res: Response) => {
     try {
         if (req.file) {
+            // Verify that file is png, jpg or jpeg
+            if (!['image/png', 'image/jpeg', 'image/jpg'].includes(req.file.mimetype)) {
+                throw new Error('Invalid file type');
+            }
             const imgBuffer = await fs.promises.readFile(req.file.path);
             await addImageToQueue(imgBuffer, req.file.path);
             res.status(200).json({ message: 'Image upload initiated' });
