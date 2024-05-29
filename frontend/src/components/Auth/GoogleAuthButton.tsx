@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useEffect } from 'react';
 
-const clientId = '437586661469-8pc9qal7rqqm8da9r3dtii3kd2m82b85.apps.googleusercontent.com';
-
+const clientId = process.env.REACT_APP_GOOGLE_CLIENT as string;
+console.log("clientId: ", clientId);
 const GoogleAuth = () => {
     const navigate = useNavigate();
     const { setToken, user } = useAuth();

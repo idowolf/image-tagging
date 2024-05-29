@@ -22,7 +22,7 @@ export const useImageSearch = (initialTags: Set<string> = new Set()) => {
       const response = await searchImages(data);
       const updatedResults = response.data.map((item: { key: string }) => ({
         ...item,
-        key: `http://localhost:5000/${item.key}`
+        key: `${process.env.REACT_APP_SERVER_URL}${item.key}`
       }));
 
       if (newSearch) {
