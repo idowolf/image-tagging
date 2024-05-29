@@ -45,3 +45,7 @@ export const searchImages = (data: { tags: string[], pageNumber: number, pageSiz
 export const autocompleteTags = (query: string) => {
   return api.get(`/tags/autocomplete?query=${query}`);
 };
+
+export const getTopTags = () => {
+  return api.get('/tags/top_tags?limit=6');
+}
