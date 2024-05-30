@@ -10,6 +10,7 @@ This project is a comprehensive web application designed for managing and taggin
 - Python
 - MongoDB
 - Ollama with the LLava model
+- Redis
 
 ## Setup Instructions
 
