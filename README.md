@@ -102,7 +102,7 @@ This project is a comprehensive web application designed for managing and taggin
 
 8. **Remember to set .env files**
 
-    - Adjust both `frontend/.env` and `backend/.env` so that all communications are performed correctly.
+    - Adjust both `frontend/.env` and `backend/.env` so that all communications are performed correctly. Notice that `frontend/.env` should include 2 parameters: REACT_APP_GOOGLE_CLIENT and REACT_APP_SERVER_URL.
 
 ## Notes
 
