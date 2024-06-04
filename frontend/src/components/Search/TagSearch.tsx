@@ -10,7 +10,7 @@ import CustomAutocompleteField from './CustomAutocompleteField';
  * Component for searching images by tags.
  */
 const TagSearch: React.FC = () => {
-    const { searchResult, handleSearch, setPage, hasMore } = useImageSearch();
+    const { searchResult, handleSearch } = useImageSearch();
     const [topTags, setTopTags] = useState<string[]>([]);
     const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
@@ -38,7 +38,9 @@ const TagSearch: React.FC = () => {
      */
     useEffect(() => {
         if (selectedTags.size > 0) {
-            handleSearch(selectedTags);
+            handleSearch({ tags: selectedTags, pageNumber: 1 });
+        } else {
+            handleSearch({ tags: new Set(), pageNumber: 1 });
         }
     }, [selectedTags]);
 
@@ -122,7 +124,7 @@ const TagSearch: React.FC = () => {
                 placeholder={'Type to find tags...'}
                 open={open}
                 setOpen={setOpen}
-                onSearchClick={() => handleSearch(selectedTags)}
+                onSearchClick={() => {}}
                 autocompleteOptions={autocompleteOptions}
                 onOptionSelected={handleTagSelect}
             />
@@ -135,7 +137,7 @@ const TagSearch: React.FC = () => {
                     ))}
                 </Grid>
             </TagsContainer>}
-            <SearchResults searchResult={searchResult} handleSearch={handleSearch} setPage={setPage} hasMore={hasMore} />
+            <SearchResults searchResult={searchResult} />
         </SearchResultsContainer>
     );
 };

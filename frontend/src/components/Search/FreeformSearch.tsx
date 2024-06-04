@@ -11,7 +11,7 @@ import { Grid, Chip, Typography } from '@mui/material';
  */
 const FreeformSearch: React.FC = () => {
   const [searchInput, setSearchInput] = useState<string>('');
-  const { searchResult, handleSearch, setPage, hasMore } = useImageSearch();
+  const { searchResult, handleSearch } = useImageSearch();
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [resolvedTags, setResolvedTags] = useState<string[]>([]);
@@ -23,7 +23,7 @@ const FreeformSearch: React.FC = () => {
     }
   }, []);
 
-  const initiateSearch = async (newSearch: boolean = true) => {
+  const initiateSearch = async (_newSearch: boolean = true) => {
     if (!searchInput) return;
     const newHistory = [searchInput, ...searchHistory.filter(item => item !== searchInput)].slice(0, 5);
     setSearchHistory(newHistory);
@@ -32,7 +32,7 @@ const FreeformSearch: React.FC = () => {
       const response = await convertTextToTags({ text: searchInput, topTagsCount: 1000 });
       const convertedTags = response.data;
       setResolvedTags(convertedTags);
-      handleSearch(convertedTags);
+      handleSearch({ tags: convertedTags, pageNumber: 1 });
     } catch (error) {
       console.error('Search failed', error);
     }
@@ -66,7 +66,7 @@ const FreeformSearch: React.FC = () => {
           ))}
         </Grid>
       </TagsContainer>}
-      <SearchResults searchResult={searchResult} handleSearch={handleSearch} setPage={setPage} hasMore={hasMore} />
+      <SearchResults searchResult={searchResult} />
     </SearchResultsContainer>
   );
 };

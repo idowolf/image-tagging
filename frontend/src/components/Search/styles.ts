@@ -49,15 +49,22 @@ export const ImagesSection = styled.div`
   margin-top: 20px;
   display: flex;
   justify-content: center;
+  flex: 1;
+  align-content: start;
+  flex-wrap: wrap;
+`;
+export const Outer = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
   flex-wrap: wrap;
 `;
 
 export const ImageResultContainer = styled.div`
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: 130px;
+  height: 130px;
   margin: 10px;
-  overflow: hidden;
   display: inline-block;
 
   &:hover .downloadIcon {
@@ -83,9 +90,4 @@ export const DownloadButton = styled(IconButton)`
     border-radius: 50%;
     padding: 5px;
   }
-`;
-
-export const ImageLabel = styled.div`
-  text-align: center;
-  margin-top: 5px;
 `;

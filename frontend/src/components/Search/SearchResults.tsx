@@ -1,11 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import DownloadIcon from '@mui/icons-material/Download';
-import { ImagesSection, ImageResultContainer, DownloadButton, ImageLabel, Image } from './styles';
+import { ImagesSection, ImageResultContainer, DownloadButton, Image, Outer } from './styles';
 interface SearchResultsProps {
     searchResult: any[];
-    handleSearch: () => void;
-    setPage: React.Dispatch<React.SetStateAction<number>>;
-    hasMore: boolean;
 }
 
 /**
@@ -13,40 +10,28 @@ interface SearchResultsProps {
  *
  * @component
  * @param {Object} searchResult - The array of search results.
- * @param {Function} handleSearch - The function to handle search.
- * @param {Function} setPage - The function to set the current page.
- * @param {boolean} hasMore - Indicates if there are more search results available.
  * @returns {JSX.Element} The search results component.
  */
-const SearchResults: React.FC<SearchResultsProps> = ({ searchResult, handleSearch, setPage, hasMore }) => {
-    useEffect(() => {
-        const handleScroll = (event: any) => {
-            const bottom = event.target.scrollHeight - event.target.scrollTop === event.target.clientHeight;
-            if (bottom && hasMore) {
-                handleSearch();
-                setPage(prevPage => prevPage + 1);
-            }
-        };
-
-        const scrollContainer = document.getElementById('scrollable-image-section');
-        scrollContainer?.addEventListener('scroll', handleScroll);
-        return () => scrollContainer?.removeEventListener('scroll', handleScroll);
-    }, [hasMore]);
-
+const SearchResults: React.FC<SearchResultsProps> = ({ searchResult }) => {
     return (
-        <ImagesSection id="scrollable-image-section" style={{ height: '100%', overflowY: 'auto' }}>
-            {searchResult.map((result, index) => (
-                <ImageResultContainer key={result._id}>
-                    <Image src={result.key} alt={`Result ${index}`} />
-                    <DownloadButton className="downloadIcon">
-                        <a href={result.key} download>
-                            <DownloadIcon style={{ color: 'white' }} />
-                        </a>
-                    </DownloadButton>
-                    <ImageLabel>Result {index + 1}</ImageLabel>
-                </ImageResultContainer>
-            ))}
-        </ImagesSection>
+        <>
+            {searchResult && searchResult.length > 0 && (
+                <Outer>
+                    <ImagesSection id="scrollable-image-section">
+                        {searchResult.map((result, index) => (
+                            <ImageResultContainer key={result._id}>
+                                <Image src={result.key} alt={`Result ${index}`} />
+                                <DownloadButton className="downloadIcon">
+                                    <a href={result.key} download>
+                                        <DownloadIcon style={{ color: 'white' }} />
+                                    </a>
+                                </DownloadButton>
+                            </ImageResultContainer>
+                        ))}
+                    </ImagesSection>
+                </Outer>
+            )}
+        </>
     );
 };
 
