@@ -30,7 +30,7 @@ describe('useImageSearch', () => {
     const { result, waitForNextUpdate } = renderHook(() => useImageSearch());
 
     act(() => {
-      result.current.handleSearch(new Set(['tag1', 'tag2']));
+      result.current.handleSearch({tags: new Set(['tag1', 'tag2']), pageNumber: 1});
     });
 
     await waitForNextUpdate();
