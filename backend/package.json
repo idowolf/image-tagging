@@ -32,6 +32,7 @@
     "start": "node dist/server.js",
     "dev": "npx tsx src/server.ts",
     "test": "jest --watchAll --setupFiles dotenv/config",
+    "fix-stuff": "npx tsx src/models/patch.ts",
     "collect-source": "npx tsx collectSource.ts"
   },
   "keywords": [],

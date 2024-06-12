@@ -11,6 +11,7 @@ const imageQueue = new Queue('image-processing', { connection: redis  });
 
 const worker = new Worker('image-processing', async job => {
     const { imgBuffer, filename } = job.data;
+    console.log(`Processing image: ${filename}`);
     await addImage(imgBuffer, filename);
 }, { connection: redis });
 
@@ -22,5 +23,6 @@ worker.on('failed', (job, err) => {
 });
 
 export const addImageToQueue = async (imgBuffer: Buffer, filename: string) => {
+    console.log(`Adding image to queue: ${filename}`);
     await imageQueue.add('process-image', { imgBuffer, filename });
 };

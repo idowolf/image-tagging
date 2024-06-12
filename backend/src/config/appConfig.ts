@@ -8,7 +8,7 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 
 const app = express();
-app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.json({ limit: '2000mb' }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 

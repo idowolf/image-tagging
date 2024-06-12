@@ -29,6 +29,6 @@ router.post('/upload', authMiddleware, upload.single('file'), uploadImage);
  * @body {number} [pageNumber=1] - The page number for pagination.
  * @body {number} [pageSize=20] - The number of results per page.
  */
-router.post('/search', authMiddleware, createCacheKeyMiddleware, cacheMiddleware, saveCacheMiddleware(CACHE_TIMEOUT), searchImages);
+router.post('/search', authMiddleware, searchImages);
 
 export default router;

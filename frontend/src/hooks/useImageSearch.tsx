@@ -29,7 +29,6 @@ export const useImageSearch = (initialTags: Set<string> = new Set()) => {
 
   useEffect(() => {
     const handleScroll = (event: any) => {
-      console.log('scrolling');
       const currentHeight = event.target.clientHeight;
       const newHeight = event.target.scrollHeight - event.target.scrollTop;
       // Check if distance is small enough to trigger loading more images
